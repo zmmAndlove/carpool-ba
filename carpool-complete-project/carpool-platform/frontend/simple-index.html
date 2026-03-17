@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长途拼车平台 - 首页</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #007AFF;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            background: #f0f0f0;
+            color: #007AFF;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 24px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #007AFF;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .feature-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .trip-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .trip-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+        
+        .trip-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .trip-type {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .trip-type.car-owner {
+            background: #e6f4ea;
+            color: #34C759;
+        }
+        
+        .trip-type.passenger {
+            background: #fff7e6;
+            color: #FF9500;
+        }
+        
+        .trip-route {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .route-point {
+            flex: 1;
+        }
+        
+        .route-city {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .route-detail {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .route-arrow {
+            color: #007AFF;
+        }
+        
+        .trip-info {
+            padding: 0 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .trip-actions {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .footer {
+            background: #333;
+            color: white;
+            padding: 40px 24px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .footer-link {
+            color: #ccc;
+            text-decoration: none;
+        }
+        
+        .footer-link:hover {
+            color: white;
+        }
+        
+        .copyright {
+            color: #999;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .trip-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="logo">
+                <span>🚗</span>
+                <span>长途拼车</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link">首页</a>
+                <a href="#" class="nav-link">发布行程</a>
+                <a href="#" class="nav-link">搜索行程</a>
+                <a href="#" class="nav-link">我的行程</a>
+                <a href="#" class="nav-link">登录/注册</a>
+            </div>
+        </nav>
+
+        <!-- 英雄区域 -->
+        <section class="hero">
+            <h1>轻松回家，快乐出行</h1>
+            <p>解决节假日火车票难买的问题，让长途出行更便捷、更经济、更安全</p>
+            
+            <div class="search-box">
+                <el-row :gutter="20">
+                    <el-col :span="10">
+                        <el-input v-model="search.from" placeholder="出发地" size="large">
+                            <template #prefix>
+                                <el-icon><Location /></el-icon>
+                            </template>
+                        </el-input>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-input v-model="search.to" placeholder="目的地" size="large">
+                            <template #prefix>
+                                <el-icon><Location /></el-icon>
+                            </template>
+                        </el-input>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-button type="primary" size="large" style="width: 100%">
+                            <el-icon><Search /></el-icon>
+                            搜索
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </div>
+        </section>
+
+        <!-- 主要内容 -->
+        <div class="container">
+            <!-- 核心功能 -->
+            <h2 class="section-title">✨ 核心功能</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🚗</div>
+                    <h3 class="feature-title">车找人 / 人找车</h3>
+                    <p class="feature-desc">车主发布空余座位，乘客寻找顺风车，智能匹配最优行程</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">智能搜索</h3>
+                    <p class="feature-desc">按时间、地点、价格等多维度筛选，快速找到合适行程</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">安全沟通</h3>
+                    <p class="feature-desc">站内消息系统，保护隐私，出行前充分沟通</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3 class="feature-title">信用评价</h3>
+                    <p class="feature-desc">双向评价系统，建立信任，让出行更放心</p>
+                </div>
+            </div>
+
+            <!-- 热门行程 -->
+            <h2 class="section-title">🔥 热门行程</h2>
+            <div class="trip-list">
+                <div class="trip-card" v-for="trip in trips" :key="trip.id">
+                    <div class="trip-header">
+                        <span :class="['trip-type', trip.type]">
+                            {{ trip.type === 'car-owner' ? '车找人' : '人找车' }}
+                        </span>
+                        <span class="trip-time">{{ trip.time }}</span>
+                    </div>
+                    
+                    <div class="trip-route">
+                        <div class="route-point">
+                            <div class="route-city">{{ trip.from.city }}</div>
+                            <div class="route-detail">{{ trip.from.detail }}</div>
+                        </div>
+                        <div class="route-arrow">→</div>
+                        <div class="route-point">
+                            <div class="route-city">{{ trip.to.city }}</div>
+                            <div class="route-detail">{{ trip.to.detail }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-info">
+                        <span>空位：{{ trip.seats }}/{{ trip.totalSeats }}</span>
+                        <span v-if="trip.price">{{ trip.price }}元/人</span>
+                        <span v-else>面议</span>
+                    </div>
+                    
+                    <div class="trip-actions">
+                        <el-button type="primary" size="small">查看详情</el-button>
+                        <el-button type="success" size="small" v-if="trip.seats > 0">加入行程</el-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="logo" style="color: white; justify-content: center;">
+                    <span>🚗</span>
+                    <span>长途拼车平台</span>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">关于我们</a>
+                    <a href="#" class="footer-link">使用条款</a>
+                    <a href="#" class="footer-link">隐私政策</a>
+                    <a href="#" class="footer-link">帮助中心</a>
+                    <a href="#" class="footer-link">联系我们</a>
+                </div>
+                
+                <div class="copyright">
+                    <p>© 2026 长途拼车平台 - 让回家更轻松 | 域名：pincheba.icu</p>
+                    <p>当前状态：前端展示已就绪 | 后端等待Java环境安装</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        const { ElButton, ElInput, ElIcon, ElRow, ElCol } = ElementPlus;
+        
+        const app = createApp({
+            setup() {
+                const search = ref({
+                    from: '',
+                    to: ''
+                });
+                
+                const trips = ref([
+                    {
+                        id: 1,
+                        type: 'car-owner',
+                        time: '明天 08:00',
+                        from: { city: '北京市', detail: '朝阳区望京SOHO' },
+                        to: { city: '石家庄市', detail: '火车站北广场' },
+                        seats: 3,
+                        totalSeats: 4,
+                        price: 150
+                    },
+                    {
+                        id: 2,
+                        type: 'passenger',
+                        time: '后天 14:00',
+                        from: { city: '上海市', detail: '浦东新区陆家嘴' },
+                        to: { city: '南京市', detail: '新街口地铁站' },
+                        seats: 1,
+                        totalSeats: 1,
+                        price: 120
+                    },
+                    {
+                        id: 3,
+                        type: 'car-owner',
+                        time: '3月18日 09:30',
+                        from: { city: '深圳市', detail: '南山区科技园' },
+                        to: { city: '广州市', detail: '天河区体育中心' },
+                        seats: 2,
+                        totalSeats: 3,
+                        price: 80
+                    }
+                ]);
+                
+                return {
+                    search,
+                    trips
+                };
+            }
+        });
+        
+        // 注册Element Plus组件
+        app.component(ElButton.name, ElButton);
+        app.component(ElInput.name, ElInput);
+        app.component(ElIcon.name, ElIcon);
+        app.component(ElRow.name, ElRow);
+        app.component(ElCol.name, ElCol);
+        
+        // 注册图标（简化处理）
+        const Location = { template: '<span>📍</span>' };
+        const Search = { template: '<span>🔍</span>' };
+        app.component('Location', Location);
+        app.component('Search', Search);
+        
+        app.mount('#app');
+    </script>
+</body>
+</html>
