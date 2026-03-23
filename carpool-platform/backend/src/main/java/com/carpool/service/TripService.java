@@ -110,6 +110,26 @@ public class TripService {
         );
     }
     
+    public int countTrips(
+            String departureProvince,
+            String departureCity,
+            String destinationProvince,
+            String destinationCity,
+            String tripType,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    ) {
+        return tripMapper.countTrips(
+            departureProvince,
+            departureCity,
+            destinationProvince,
+            destinationCity,
+            tripType,
+            startTime,
+            endTime
+        );
+    }
+    
     @Transactional
     public Trip updateTrip(Long tripId, Long userId, TripDTO tripDTO) {
         Optional<Trip> tripOpt = tripMapper.findById(tripId);

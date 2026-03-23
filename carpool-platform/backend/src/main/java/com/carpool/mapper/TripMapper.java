@@ -99,6 +99,20 @@ public interface TripMapper {
     int countByRoute(String departureProvince, String departureCity,
                      String destinationProvince, String destinationCity);
     
+    @Select("<script>" +
+            "SELECT COUNT(*) FROM trips WHERE status = 'pending' " +
+            "<if test='departureProvince != null'>AND departure_province = #{departureProvince}</if>" +
+            "<if test='departureCity != null'>AND departure_city = #{departureCity}</if>" +
+            "<if test='destinationProvince != null'>AND destination_province = #{destinationProvince}</if>" +
+            "<if test='destinationCity != null'>AND destination_city = #{destinationCity}</if>" +
+            "<if test='tripType != null'>AND trip_type = #{tripType}</if>" +
+            "<if test='startTime != null'>AND departure_time &gt;= #{startTime}</if>" +
+            "<if test='endTime != null'>AND departure_time &lt;= #{endTime}</if>" +
+            "</script>")
+    int countTrips(String departureProvince, String departureCity,
+                   String destinationProvince, String destinationCity,
+                   String tripType, LocalDateTime startTime, LocalDateTime endTime);
+    
     @Update("UPDATE trips SET seats_available = seats_available - 1, updated_at = NOW() WHERE id = #{id} AND seats_available > 0")
     int decreaseSeats(Long id);
     

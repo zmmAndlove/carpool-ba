@@ -124,16 +124,16 @@ public class TripController {
                 size
             );
             
-            int total = 0;
-            if (departureProvince != null && departureCity != null && 
-                destinationProvince != null && destinationCity != null) {
-                total = tripService.countTripsByRoute(
-                    departureProvince,
-                    departureCity,
-                    destinationProvince,
-                    destinationCity
-                );
-            }
+            // 计算总记录数，使用与搜索相同的条件
+            int total = tripService.countTrips(
+                departureProvince,
+                departureCity,
+                destinationProvince,
+                destinationCity,
+                tripType,
+                startTime,
+                endTime
+            );
             
             Map<String, Object> response = new HashMap<>();
             response.put("trips", trips.stream().map(this::convertToResponse).toList());

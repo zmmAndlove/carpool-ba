@@ -57,7 +57,7 @@
     </el-main>
 
     <!-- 页脚 -->
-    <el-footer class="home-footer">
+    <div class="home-footer">
       <div class="footer-content">
         <div class="footer-section">
           <h3>关于我们</h3>
@@ -87,7 +87,7 @@
         <p>© 2026 长途拼车平台 版权所有 | 京ICP备12345678号</p>
         <p>安全出行，快乐回家</p>
       </div>
-    </el-footer>
+    </div>
   </div>
 </template>
 
@@ -130,6 +130,33 @@ const handleUserCommand = (command: string) => {
   }
 }
 </script>
+
+<style>
+/* 全局样式覆盖，确保页脚显示正确 */
+.home-footer,
+.home-footer * {
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
+  color: #ffffff !important;
+}
+
+.footer-section h3 {
+  color: #ffffff !important;
+}
+
+.footer-section p,
+.footer-section ul li {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer-section ul li:hover {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+</style>
 
 <style scoped>
 .layout-container {
@@ -292,14 +319,17 @@ const handleUserCommand = (command: string) => {
   margin: 0 auto;
   padding: 20px;
   width: 100%;
+  background: inherit;
 }
 
-.home-footer {
-  background: rgba(26, 26, 46, 0.95);
-  backdrop-filter: blur(20px);
+.layout-container .home-footer {
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
   padding: 40px 20px 20px;
   margin-top: auto;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff !important;
+  min-height: 300px;
 }
 
 .footer-content {
@@ -309,19 +339,22 @@ const handleUserCommand = (command: string) => {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 40px;
   margin-bottom: 40px;
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
+  color: #ffffff !important;
 }
 
 .footer-section h3 {
   font-size: 18px;
   margin-bottom: 16px;
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 600;
   letter-spacing: -0.3px;
 }
 
 .footer-section p {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7) !important;
   margin: 8px 0;
   line-height: 1.6;
 }
@@ -330,17 +363,21 @@ const handleUserCommand = (command: string) => {
   list-style: none;
   padding: 0;
   margin: 0;
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
 }
 
 .footer-section ul li {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7) !important;
   margin: 8px 0;
   transition: all 0.3s;
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
 }
 
 .footer-section ul li:hover {
-  color: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1) !important;
   transform: translateX(4px);
 }
 
@@ -348,12 +385,17 @@ const handleUserCommand = (command: string) => {
   text-align: center;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
+  color: #ffffff !important;
 }
 
 .footer-bottom p {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5) !important;
   margin: 4px 0;
+  background-color: #1a1a2e !important;
+  background: #1a1a2e !important;
 }
 
 @media (max-width: 768px) {
