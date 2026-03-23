@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOpt = userMapper.findByUsername(username);
-        if (userOpt.isEmpty()) {
+        if (!userOpt.isPresent()) {
             throw new UsernameNotFoundException("用户不存在: " + username);
         }
         

@@ -5,7 +5,7 @@ import com.carpool.dto.UserDTO;
 import com.carpool.entity.User;
 import com.carpool.service.JwtService;
 import com.carpool.service.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,7 +71,7 @@ public class AuthController {
             String token = jwtService.generateToken(userDetails);
             
             Optional<User> userOpt = userService.getUserByUsername(loginDTO.getUsername());
-            if (userOpt.isEmpty()) {
+            if (!userOpt.isPresent()) {
                 throw new RuntimeException("用户不存在");
             }
             
@@ -95,7 +95,7 @@ public class AuthController {
             String username = jwtService.extractUsername(token);
             
             Optional<User> userOpt = userService.getUserByUsername(username);
-            if (userOpt.isEmpty()) {
+            if (!userOpt.isPresent()) {
                 throw new RuntimeException("用户不存在");
             }
             

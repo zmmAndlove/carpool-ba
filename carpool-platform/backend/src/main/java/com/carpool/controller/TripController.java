@@ -6,7 +6,7 @@ import com.carpool.entity.User;
 import com.carpool.service.JwtService;
 import com.carpool.service.TripService;
 import com.carpool.service.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/trips")
@@ -56,7 +57,7 @@ public class TripController {
     public ResponseEntity<?> getTrip(@PathVariable Long id) {
         try {
             Optional<Trip> tripOpt = tripService.getTripById(id);
-            if (tripOpt.isEmpty()) {
+            if (!tripOpt.isPresent()) {
                 Map<String, String> error = new HashMap<>();
                 error.put("error", "行程不存在");
                 return ResponseEntity.status(404).body(error);
@@ -88,7 +89,7 @@ public class TripController {
             List<Trip> trips = tripService.getUserTrips(userId, status);
             
             Map<String, Object> response = new HashMap<>();
-            response.put("trips", trips.stream().map(this::convertToResponse).toList());
+            response.put("trips", trips.stream().map(this::convertToResponse).collect(Collectors.toList()));
             response.put("total", trips.size());
             
             return ResponseEntity.ok(response);
@@ -136,7 +137,7 @@ public class TripController {
             );
             
             Map<String, Object> response = new HashMap<>();
-            response.put("trips", trips.stream().map(this::convertToResponse).toList());
+            response.put("trips", trips.stream().map(this::convertToResponse).collect(Collectors.toList()));
             response.put("page", page);
             response.put("size", size);
             response.put("total", total);
@@ -259,7 +260,7 @@ public class TripController {
         String token = authHeader.substring(7);
         String phone = jwtService.extractUsername(token);
         Optional<User> userOpt = userService.getUserByPhone(phone);
-        if (userOpt.isEmpty()) {
+        if (!userOpt.isPresent()) {
             throw new RuntimeException("用户不存在");
         }
         return userOpt.get().getId();

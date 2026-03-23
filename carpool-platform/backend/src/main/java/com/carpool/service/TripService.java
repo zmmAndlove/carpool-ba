@@ -26,7 +26,7 @@ public class TripService {
     public Trip createTrip(Long userId, TripDTO tripDTO) {
         // 验证用户是否存在
         Optional<User> userOpt = userMapper.findById(userId);
-        if (userOpt.isEmpty()) {
+        if (!userOpt.isPresent()) {
             throw new RuntimeException("用户不存在");
         }
         
@@ -133,7 +133,7 @@ public class TripService {
     @Transactional
     public Trip updateTrip(Long tripId, Long userId, TripDTO tripDTO) {
         Optional<Trip> tripOpt = tripMapper.findById(tripId);
-        if (tripOpt.isEmpty()) {
+        if (!tripOpt.isPresent()) {
             throw new RuntimeException("行程不存在");
         }
         
@@ -172,7 +172,7 @@ public class TripService {
     @Transactional
     public void deleteTrip(Long tripId, Long userId) {
         Optional<Trip> tripOpt = tripMapper.findById(tripId);
-        if (tripOpt.isEmpty()) {
+        if (!tripOpt.isPresent()) {
             throw new RuntimeException("行程不存在");
         }
         
@@ -194,7 +194,7 @@ public class TripService {
     @Transactional
     public Trip joinTrip(Long tripId, Long userId) {
         Optional<Trip> tripOpt = tripMapper.findById(tripId);
-        if (tripOpt.isEmpty()) {
+        if (!tripOpt.isPresent()) {
             throw new RuntimeException("行程不存在");
         }
         
@@ -232,7 +232,7 @@ public class TripService {
     @Transactional
     public Trip cancelJoin(Long tripId, Long userId) {
         Optional<Trip> tripOpt = tripMapper.findById(tripId);
-        if (tripOpt.isEmpty()) {
+        if (!tripOpt.isPresent()) {
             throw new RuntimeException("行程不存在");
         }
         
@@ -256,7 +256,7 @@ public class TripService {
     @Transactional
     public Trip completeTrip(Long tripId, Long userId) {
         Optional<Trip> tripOpt = tripMapper.findById(tripId);
-        if (tripOpt.isEmpty()) {
+        if (!tripOpt.isPresent()) {
             throw new RuntimeException("行程不存在");
         }
         

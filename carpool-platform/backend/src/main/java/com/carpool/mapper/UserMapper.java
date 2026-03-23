@@ -9,12 +9,12 @@ import java.util.Optional;
 @Mapper
 public interface UserMapper {
     
-    @Insert("INSERT INTO users (username, phone, password, real_name, avatar, gender, age, id_card, " +
+    @Insert("INSERT INTO users (username, phone, password, real_name, avatar, gender, age, " +
             "hometown_province, hometown_city, current_province, current_city, university, interests, " +
-            "rating, trip_count, completed_trips, status, created_at, updated_at) " +
-            "VALUES (#{username}, #{phone}, #{password}, #{realName}, #{avatar}, #{gender}, #{age}, #{idCard}, " +
+            "rating, trip_count, completed_trips, created_at, updated_at) " +
+            "VALUES (#{username}, #{phone}, #{password}, #{realName}, #{avatar}, #{gender}, #{age}, " +
             "#{hometownProvince}, #{hometownCity}, #{currentProvince}, #{currentCity}, #{university}, #{interests}, " +
-            "#{rating}, #{tripCount}, #{completedTrips}, #{status}, #{createdAt}, #{updatedAt})")
+            "#{rating}, #{tripCount}, #{completedTrips}, #{createdAt}, #{updatedAt})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(User user);
     

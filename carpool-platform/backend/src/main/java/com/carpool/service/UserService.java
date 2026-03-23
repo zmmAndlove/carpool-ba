@@ -21,31 +21,42 @@ public class UserService {
     
     @Transactional
     public User register(UserDTO userDTO) {
-        // 检查用户名是否已注册
-        if (userMapper.countByUsername(userDTO.getUsername()) > 0) {
-            throw new RuntimeException("该用户名已注册");
+        try {
+            // 检查用户名是否已注册
+            int count = userMapper.countByUsername(userDTO.getUsername());
+            System.out.println("Username count: " + count);
+            if (count > 0) {
+                throw new RuntimeException("该用户名已注册");
+            }
+            
+            // 创建用户实体
+            User user = new User();
+            user.setUsername(userDTO.getUsername());
+            // 如果没有提供phone，使用默认值
+            user.setPhone(userDTO.getPhone() != null ? userDTO.getPhone() : "");
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            user.setRealName(userDTO.getRealName());
+            user.setAvatar(userDTO.getAvatar());
+            user.setGender(userDTO.getGender());
+            user.setAge(userDTO.getAge());
+            // user.setIdCard(userDTO.getIdCard()); // 数据库中没有这个字段
+            user.setHometownProvince(userDTO.getHometownProvince());
+            user.setHometownCity(userDTO.getHometownCity());
+            user.setCurrentProvince(userDTO.getCurrentProvince());
+            user.setCurrentCity(userDTO.getCurrentCity());
+            user.setUniversity(userDTO.getUniversity());
+            user.setInterests(userDTO.getInterests());
+            
+            // 保存用户
+            System.out.println("Inserting user: " + user.getUsername());
+            int result = userMapper.insert(user);
+            System.out.println("Insert result: " + result);
+            return user;
+        } catch (Exception e) {
+            System.out.println("Register error: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("注册失败: " + e.getMessage());
         }
-        
-        // 创建用户实体
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPhone(userDTO.getPhone());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRealName(userDTO.getRealName());
-        user.setAvatar(userDTO.getAvatar());
-        user.setGender(userDTO.getGender());
-        user.setAge(userDTO.getAge());
-        user.setIdCard(userDTO.getIdCard());
-        user.setHometownProvince(userDTO.getHometownProvince());
-        user.setHometownCity(userDTO.getHometownCity());
-        user.setCurrentProvince(userDTO.getCurrentProvince());
-        user.setCurrentCity(userDTO.getCurrentCity());
-        user.setUniversity(userDTO.getUniversity());
-        user.setInterests(userDTO.getInterests());
-        
-        // 保存用户
-        userMapper.insert(user);
-        return user;
     }
     
     public Optional<User> login(String username, String password) {
@@ -74,7 +85,7 @@ public class UserService {
     @Transactional
     public User updateUser(Long id, UserDTO userDTO) {
         Optional<User> userOpt = userMapper.findById(id);
-        if (userOpt.isEmpty()) {
+        if (!userOpt.isPresent()) {
             throw new RuntimeException("用户不存在");
         }
         
@@ -99,7 +110,7 @@ public class UserService {
     @Transactional
     public void updatePassword(Long id, String oldPassword, String newPassword) {
         Optional<User> userOpt = userMapper.findById(id);
-        if (userOpt.isEmpty()) {
+        if (!userOpt.isPresent()) {
             throw new RuntimeException("用户不存在");
         }
         

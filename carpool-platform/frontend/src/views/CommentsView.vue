@@ -170,22 +170,18 @@ const mockComments = [
 const fetchComments = async () => {
   try {
     loading.value = true
-    // 实际项目中应该调用API
-    // const response = await axios.get('/api/comments', {
-    //   params: {
-    //     page: currentPage.value,
-    //     size: pageSize.value
-    //   }
-    // })
-    // comments.value = response.data.comments
-    // total.value = response.data.total
-    
-    // 使用模拟数据
-    comments.value = mockComments
-    total.value = mockComments.length
+    // 调用API获取评论数据
+    const response = await axios.get('/api/comments', {
+      params: {
+        page: currentPage.value,
+        size: pageSize.value
+      }
+    })
+    comments.value = response.data.comments
+    total.value = response.data.total
   } catch (error) {
-    console.error('获取评论失败:', error)
-    ElMessage.error('获取评论失败')
+    console.error('获取建议失败:', error)
+    ElMessage.error('获取建议失败')
   } finally {
     loading.value = false
   }
@@ -207,33 +203,27 @@ const submitComment = async () => {
   }
   
   try {
-    // 实际项目中应该调用API
-    // await axios.post('/api/comments', {
-    //   content: newCommentContent.value,
-    //   rating: newCommentRating.value
-    // })
-    
-    // 模拟添加建议
-    const newComment = {
-      id: Date.now(),
-      username: authStore.user?.username || '用户',
-      avatar: authStore.user?.avatar || '',
+    // 调用API提交建议
+    await axios.post('/api/comments', {
       content: newCommentContent.value,
-      rating: newCommentRating.value,
-      likes: 0,
-      createdAt: new Date()
-    }
-    comments.value.unshift(newComment)
-    total.value++
+      rating: newCommentRating.value
+    })
     
     // 重置表单
     newCommentContent.value = ''
     newCommentRating.value = 5
     showAddCommentDialog.value = false
     
+    // 重新获取评论列表
+    await fetchComments()
+    
     ElMessage.success('建议提交成功')
-  } catch (error) {
-    ElMessage.error('提交建议失败')
+  } catch (error: any) {
+    if (error.response?.data?.error) {
+      ElMessage.error(error.response.data.error)
+    } else {
+      ElMessage.error('提交建议失败')
+    }
   }
 }
 
@@ -248,12 +238,20 @@ const handleReply = (comment: any) => {
   ElMessage.info('回复功能开发中...')
 }
 
-const handleLike = (commentId: number) => {
-  // 实际项目中应该调用API
-  const comment = comments.value.find(c => c.id === commentId)
-  if (comment) {
-    comment.likes++
+const handleLike = async (commentId: number) => {
+  try {
+    // 调用API进行点赞
+    await axios.post(`/api/comments/${commentId}/like`)
+    
+    // 更新本地数据
+    const comment = comments.value.find(c => c.id === commentId)
+    if (comment) {
+      comment.likes++
+    }
+    
     ElMessage.success('点赞成功')
+  } catch (error) {
+    ElMessage.error('点赞失败')
   }
 }
 
