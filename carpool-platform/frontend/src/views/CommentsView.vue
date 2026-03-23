@@ -79,6 +79,41 @@
           />
         </div>
       </el-card>
+
+      <!-- 提交建议对话框 -->
+      <el-dialog
+        v-model="showAddCommentDialog"
+        title="提交建议"
+        width="500px"
+      >
+        <el-form>
+          <el-form-item label="评分">
+            <el-rate
+              v-model="newCommentRating"
+              :max="5"
+              show-score
+              text-color="#ff9900"
+              score-template="{value}"
+            />
+          </el-form-item>
+          <el-form-item label="建议内容">
+            <el-input
+              v-model="newCommentContent"
+              type="textarea"
+              :rows="4"
+              placeholder="分享您的建议和意见..."
+              maxlength="500"
+              show-word-limit
+            />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancelSubmit">取消</el-button>
+            <el-button type="primary" @click="submitComment">提交</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </Layout>
 </template>
@@ -156,46 +191,57 @@ const fetchComments = async () => {
   }
 }
 
+// 提交建议相关状态
+const showAddCommentDialog = ref(false)
+const newCommentContent = ref('')
+const newCommentRating = ref(5)
+
 const handleAddComment = () => {
-  ElMessageBox.prompt('请输入您的建议:', '提交建议', {
-    confirmButtonText: '提交',
-    cancelButtonText: '取消',
-    inputPlaceholder: '分享您的建议和意见...',
-    inputType: 'textarea',
-    inputValidator: (value: string) => {
-      if (!value || value.trim().length < 5) {
-        return '建议内容至少5个字符'
-      }
-      return true
+  showAddCommentDialog.value = true
+}
+
+const submitComment = async () => {
+  if (!newCommentContent.value || newCommentContent.value.trim().length < 5) {
+    ElMessage.warning('建议内容至少5个字符')
+    return
+  }
+  
+  try {
+    // 实际项目中应该调用API
+    // await axios.post('/api/comments', {
+    //   content: newCommentContent.value,
+    //   rating: newCommentRating.value
+    // })
+    
+    // 模拟添加建议
+    const newComment = {
+      id: Date.now(),
+      username: authStore.user?.username || '用户',
+      avatar: authStore.user?.avatar || '',
+      content: newCommentContent.value,
+      rating: newCommentRating.value,
+      likes: 0,
+      createdAt: new Date()
     }
-  }).then(async ({ value }) => {
-    try {
-      // 实际项目中应该调用API
-      // await axios.post('/api/comments', {
-      //   content: value,
-      //   rating: 5 // 可以添加评分选择
-      // })
-      
-      // 模拟添加建议
-      const newComment = {
-        id: Date.now(),
-        username: authStore.user?.username || '用户',
-        avatar: authStore.user?.avatar || '',
-        content: value,
-        rating: 5,
-        likes: 0,
-        createdAt: new Date()
-      }
-      comments.value.unshift(newComment)
-      total.value++
-      
-      ElMessage.success('建议提交成功')
-    } catch (error) {
-      ElMessage.error('提交建议失败')
-    }
-  }).catch(() => {
-    // 取消提交
-  })
+    comments.value.unshift(newComment)
+    total.value++
+    
+    // 重置表单
+    newCommentContent.value = ''
+    newCommentRating.value = 5
+    showAddCommentDialog.value = false
+    
+    ElMessage.success('建议提交成功')
+  } catch (error) {
+    ElMessage.error('提交建议失败')
+  }
+}
+
+const cancelSubmit = () => {
+  // 重置表单
+  newCommentContent.value = ''
+  newCommentRating.value = 5
+  showAddCommentDialog.value = false
 }
 
 const handleReply = (comment: any) => {
