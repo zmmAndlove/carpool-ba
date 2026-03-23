@@ -46,54 +46,29 @@
             <el-row :gutter="20">
               <el-col :xs="24" :sm="8">
                 <el-form-item label="省份" prop="departureProvince">
-                  <el-select
+                  <el-input
                     v-model="publishForm.departureProvince"
-                    placeholder="请选择省份"
-                    @change="handleProvinceChange('departure')"
+                    placeholder="请输入省份"
                     style="width: 100%"
-                  >
-                    <el-option
-                      v-for="province in provinces"
-                      :key="province.value"
-                      :label="province.label"
-                      :value="province.value"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8">
                 <el-form-item label="城市" prop="departureCity">
-                  <el-select
+                  <el-input
                     v-model="publishForm.departureCity"
-                    placeholder="请选择城市"
-                    @change="handleCityChange('departure')"
+                    placeholder="请输入城市"
                     style="width: 100%"
-                    :disabled="!publishForm.departureProvince"
-                  >
-                    <el-option
-                      v-for="city in departureCities"
-                      :key="city.value"
-                      :label="city.label"
-                      :value="city.value"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8">
                 <el-form-item label="区县" prop="departureDistrict">
-                  <el-select
+                  <el-input
                     v-model="publishForm.departureDistrict"
-                    placeholder="请选择区县"
+                    placeholder="请输入区县"
                     style="width: 100%"
-                    :disabled="!publishForm.departureCity"
-                  >
-                    <el-option
-                      v-for="district in departureDistricts"
-                      :key="district.value"
-                      :label="district.label"
-                      :value="district.value"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -113,54 +88,29 @@
             <el-row :gutter="20">
               <el-col :xs="24" :sm="8">
                 <el-form-item label="省份" prop="destinationProvince">
-                  <el-select
+                  <el-input
                     v-model="publishForm.destinationProvince"
-                    placeholder="请选择省份"
-                    @change="handleProvinceChange('destination')"
+                    placeholder="请输入省份"
                     style="width: 100%"
-                  >
-                    <el-option
-                      v-for="province in provinces"
-                      :key="province.value"
-                      :label="province.label"
-                      :value="province.value"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8">
                 <el-form-item label="城市" prop="destinationCity">
-                  <el-select
+                  <el-input
                     v-model="publishForm.destinationCity"
-                    placeholder="请选择城市"
-                    @change="handleCityChange('destination')"
+                    placeholder="请输入城市"
                     style="width: 100%"
-                    :disabled="!publishForm.destinationProvince"
-                  >
-                    <el-option
-                      v-for="city in destinationCities"
-                      :key="city.value"
-                      :label="city.label"
-                      :value="city.value"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8">
                 <el-form-item label="区县" prop="destinationDistrict">
-                  <el-select
+                  <el-input
                     v-model="publishForm.destinationDistrict"
-                    placeholder="请选择区县"
+                    placeholder="请输入区县"
                     style="width: 100%"
-                    :disabled="!publishForm.destinationCity"
-                  >
-                    <el-option
-                      v-for="district in destinationDistricts"
-                      :key="district.value"
-                      :label="district.label"
-                      :value="district.value"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -309,52 +259,7 @@ const authStore = useAuthStore()
 const publishFormRef = ref<FormInstance>()
 const loading = ref(false)
 
-// 省市区数据（简化版）
-const provinces = ref([
-  { value: '北京市', label: '北京市' },
-  { value: '上海市', label: '上海市' },
-  { value: '广东省', label: '广东省' },
-  { value: '江苏省', label: '江苏省' },
-  { value: '浙江省', label: '浙江省' },
-  { value: '四川省', label: '四川省' },
-  { value: '湖北省', label: '湖北省' },
-  { value: '河北省', label: '河北省' },
-  { value: '河南省', label: '河南省' },
-  { value: '山东省', label: '山东省' }
-])
 
-const citiesData: Record<string, Array<{value: string, label: string}>> = {
-  '北京市': [
-    { value: '北京市', label: '北京市' }
-  ],
-  '河北省': [
-    { value: '石家庄市', label: '石家庄市' },
-    { value: '保定市', label: '保定市' },
-    { value: '唐山市', label: '唐山市' },
-    { value: '邯郸市', label: '邯郸市' }
-  ],
-  '广东省': [
-    { value: '广州市', label: '广州市' },
-    { value: '深圳市', label: '深圳市' },
-    { value: '东莞市', label: '东莞市' },
-    { value: '佛山市', label: '佛山市' }
-  ]
-}
-
-const districtsData: Record<string, Array<{value: string, label: string}>> = {
-  '北京市': [
-    { value: '朝阳区', label: '朝阳区' },
-    { value: '海淀区', label: '海淀区' },
-    { value: '东城区', label: '东城区' },
-    { value: '西城区', label: '西城区' }
-  ],
-  '石家庄市': [
-    { value: '长安区', label: '长安区' },
-    { value: '桥西区', label: '桥西区' },
-    { value: '新华区', label: '新华区' },
-    { value: '裕华区', label: '裕华区' }
-  ]
-}
 
 const publishForm = reactive({
   tripType: 'car_owner',
@@ -375,21 +280,7 @@ const publishForm = reactive({
   description: ''
 })
 
-const departureCities = computed(() => {
-  return citiesData[publishForm.departureProvince] || []
-})
 
-const departureDistricts = computed(() => {
-  return districtsData[publishForm.departureCity] || []
-})
-
-const destinationCities = computed(() => {
-  return citiesData[publishForm.destinationProvince] || []
-})
-
-const destinationDistricts = computed(() => {
-  return districtsData[publishForm.destinationCity] || []
-})
 
 const suggestedPrice = computed(() => {
   // 简单的价格计算逻辑
@@ -451,23 +342,7 @@ const disabledDate = (time: Date) => {
   return time.getTime() < Date.now() - 3600 * 1000 * 24
 }
 
-const handleProvinceChange = (type: 'departure' | 'destination') => {
-  if (type === 'departure') {
-    publishForm.departureCity = ''
-    publishForm.departureDistrict = ''
-  } else {
-    publishForm.destinationCity = ''
-    publishForm.destinationDistrict = ''
-  }
-}
 
-const handleCityChange = (type: 'departure' | 'destination') => {
-  if (type === 'departure') {
-    publishForm.departureDistrict = ''
-  } else {
-    publishForm.destinationDistrict = ''
-  }
-}
 
 const handlePublish = async () => {
   if (!publishFormRef.value) return
