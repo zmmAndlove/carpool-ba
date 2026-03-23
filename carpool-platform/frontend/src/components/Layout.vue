@@ -20,6 +20,7 @@
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/search">找行程</el-menu-item>
             <el-menu-item index="/publish">发布行程</el-menu-item>
+            <el-menu-item index="/comments">评论</el-menu-item>
           </el-menu>
         </div>
         

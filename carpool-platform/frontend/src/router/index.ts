@@ -45,6 +45,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '个人中心', requiresAuth: true }
   },
   {
+    path: '/comments',
+    name: 'Comments',
+    component: () => import('@/views/CommentsView.vue'),
+    meta: { title: '用户评论' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/NotFoundView.vue'),
