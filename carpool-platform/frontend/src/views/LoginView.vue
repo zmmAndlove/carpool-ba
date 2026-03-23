@@ -13,10 +13,10 @@
         class="login-form"
         @submit.prevent="handleLogin"
       >
-        <el-form-item prop="phone">
+        <el-form-item prop="username">
           <el-input
-            v-model="loginForm.phone"
-            placeholder="请输入手机号"
+            v-model="loginForm.username"
+            placeholder="请输入用户名"
             size="large"
             :prefix-icon="User"
           />
@@ -72,24 +72,23 @@ const loginFormRef = ref<FormInstance>()
 const loading = ref(false)
 
 const loginForm = reactive({
-  phone: '',
+  username: '',
   password: ''
 })
 
-const validatePhone = (rule: any, value: string, callback: any) => {
-  const phoneRegex = /^1[3-9]\d{9}$/
+const validateUsername = (rule: any, value: string, callback: any) => {
   if (!value) {
-    callback(new Error('请输入手机号'))
-  } else if (!phoneRegex.test(value)) {
-    callback(new Error('手机号格式不正确'))
+    callback(new Error('请输入用户名'))
+  } else if (value.length < 3 || value.length > 20) {
+    callback(new Error('用户名长度3-20位'))
   } else {
     callback()
   }
 }
 
 const loginRules: FormRules = {
-  phone: [
-    { required: true, validator: validatePhone, trigger: 'blur' }
+  username: [
+    { required: true, validator: validateUsername, trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },

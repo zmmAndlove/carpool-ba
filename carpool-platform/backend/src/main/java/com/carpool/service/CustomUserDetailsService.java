@@ -21,15 +21,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     
     @Override
-    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        Optional<User> userOpt = userMapper.findByPhone(phone);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> userOpt = userMapper.findByUsername(username);
         if (userOpt.isEmpty()) {
-            throw new UsernameNotFoundException("用户不存在: " + phone);
+            throw new UsernameNotFoundException("用户不存在: " + username);
         }
         
         User user = userOpt.get();
         return new org.springframework.security.core.userdetails.User(
-            user.getPhone(),
+            user.getUsername(),
             user.getPassword(),
             Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );

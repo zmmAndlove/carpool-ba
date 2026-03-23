@@ -30,7 +30,7 @@
                 <el-avatar :src="authStore.user?.avatar" :size="36">
                   {{ authStore.user?.realName?.charAt(0) || '用户' }}
                 </el-avatar>
-                <span class="user-name">{{ authStore.user?.realName || authStore.user?.phone }}</span>
+                <span class="user-name">{{ authStore.user?.realName || authStore.user?.username }}</span>
                 <el-icon><ArrowDown /></el-icon>
               </span>
               <template #dropdown>

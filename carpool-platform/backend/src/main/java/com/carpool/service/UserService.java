@@ -21,13 +21,14 @@ public class UserService {
     
     @Transactional
     public User register(UserDTO userDTO) {
-        // 检查手机号是否已注册
-        if (userMapper.countByPhone(userDTO.getPhone()) > 0) {
-            throw new RuntimeException("该手机号已注册");
+        // 检查用户名是否已注册
+        if (userMapper.countByUsername(userDTO.getUsername()) > 0) {
+            throw new RuntimeException("该用户名已注册");
         }
         
         // 创建用户实体
         User user = new User();
+        user.setUsername(userDTO.getUsername());
         user.setPhone(userDTO.getPhone());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setRealName(userDTO.getRealName());
@@ -47,8 +48,8 @@ public class UserService {
         return user;
     }
     
-    public Optional<User> login(String phone, String password) {
-        Optional<User> userOpt = userMapper.findByPhone(phone);
+    public Optional<User> login(String username, String password) {
+        Optional<User> userOpt = userMapper.findByUsername(username);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (passwordEncoder.matches(password, user.getPassword())) {
@@ -64,6 +65,10 @@ public class UserService {
     
     public Optional<User> getUserByPhone(String phone) {
         return userMapper.findByPhone(phone);
+    }
+    
+    public Optional<User> getUserByUsername(String username) {
+        return userMapper.findByUsername(username);
     }
     
     @Transactional

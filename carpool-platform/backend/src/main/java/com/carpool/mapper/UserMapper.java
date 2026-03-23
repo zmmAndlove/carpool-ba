@@ -9,16 +9,17 @@ import java.util.Optional;
 @Mapper
 public interface UserMapper {
     
-    @Insert("INSERT INTO users (phone, password, real_name, avatar, gender, age, id_card, " +
+    @Insert("INSERT INTO users (username, phone, password, real_name, avatar, gender, age, id_card, " +
             "hometown_province, hometown_city, current_province, current_city, university, interests, " +
             "rating, trip_count, completed_trips, status, created_at, updated_at) " +
-            "VALUES (#{phone}, #{password}, #{realName}, #{avatar}, #{gender}, #{age}, #{idCard}, " +
+            "VALUES (#{username}, #{phone}, #{password}, #{realName}, #{avatar}, #{gender}, #{age}, #{idCard}, " +
             "#{hometownProvince}, #{hometownCity}, #{currentProvince}, #{currentCity}, #{university}, #{interests}, " +
             "#{rating}, #{tripCount}, #{completedTrips}, #{status}, #{createdAt}, #{updatedAt})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(User user);
     
     @Update("UPDATE users SET " +
+            "username = #{username}, " +
             "real_name = #{realName}, " +
             "avatar = #{avatar}, " +
             "gender = #{gender}, " +
@@ -41,6 +42,7 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE id = #{id}")
     @Results(id = "userResult", value = {
         @Result(property = "id", column = "id"),
+        @Result(property = "username", column = "username"),
         @Result(property = "phone", column = "phone"),
         @Result(property = "password", column = "password"),
         @Result(property = "realName", column = "real_name"),
@@ -67,6 +69,10 @@ public interface UserMapper {
     @ResultMap("userResult")
     Optional<User> findByPhone(String phone);
     
+    @Select("SELECT * FROM users WHERE username = #{username}")
+    @ResultMap("userResult")
+    Optional<User> findByUsername(String username);
+    
     @Select("SELECT * FROM users WHERE status = 'ACTIVE' " +
             "AND hometown_province = #{province} AND hometown_city = #{city} " +
             "ORDER BY rating DESC LIMIT #{limit}")
@@ -75,6 +81,9 @@ public interface UserMapper {
     
     @Select("SELECT COUNT(*) FROM users WHERE phone = #{phone}")
     int countByPhone(String phone);
+    
+    @Select("SELECT COUNT(*) FROM users WHERE username = #{username}")
+    int countByUsername(String username);
     
     @Update("UPDATE users SET password = #{password}, updated_at = NOW() WHERE id = #{id}")
     int updatePassword(Long id, String password);

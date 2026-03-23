@@ -38,7 +38,7 @@ public class AuthController {
             
             // 生成JWT令牌
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                user.getPhone(),
+                user.getUsername(),
                 user.getPassword(),
                 java.util.Collections.emptyList()
             );
@@ -62,7 +62,7 @@ public class AuthController {
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                    loginDTO.getPhone(),
+                    loginDTO.getUsername(),
                     loginDTO.getPassword()
                 )
             );
@@ -70,7 +70,7 @@ public class AuthController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String token = jwtService.generateToken(userDetails);
             
-            Optional<User> userOpt = userService.getUserByPhone(loginDTO.getPhone());
+            Optional<User> userOpt = userService.getUserByUsername(loginDTO.getUsername());
             if (userOpt.isEmpty()) {
                 throw new RuntimeException("用户不存在");
             }
@@ -83,7 +83,7 @@ public class AuthController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, String> error = new HashMap<>();
-            error.put("error", "手机号或密码错误");
+            error.put("error", "用户名或密码错误");
             return ResponseEntity.status(401).body(error);
         }
     }
@@ -92,9 +92,9 @@ public class AuthController {
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
         try {
             String token = authHeader.substring(7);
-            String phone = jwtService.extractUsername(token);
+            String username = jwtService.extractUsername(token);
             
-            Optional<User> userOpt = userService.getUserByPhone(phone);
+            Optional<User> userOpt = userService.getUserByUsername(username);
             if (userOpt.isEmpty()) {
                 throw new RuntimeException("用户不存在");
             }
@@ -113,6 +113,7 @@ public class AuthController {
     private Map<String, Object> convertToResponse(User user) {
         Map<String, Object> response = new HashMap<>();
         response.put("id", user.getId());
+        response.put("username", user.getUsername());
         response.put("phone", user.getPhone());
         response.put("realName", user.getRealName());
         response.put("avatar", user.getAvatar());

@@ -20,56 +20,36 @@
           :rules="step1Rules"
           class="register-form"
         >
-          <el-form-item prop="phone">
-            <el-input
-              v-model="step1Form.phone"
-              placeholder="请输入手机号"
-              size="large"
-              :prefix-icon="Phone"
-            />
-          </el-form-item>
-          
-          <el-form-item prop="password">
-            <el-input
-              v-model="step1Form.password"
-              type="password"
-              placeholder="请输入密码（至少6位）"
-              size="large"
-              :prefix-icon="Lock"
-              show-password
-            />
-          </el-form-item>
-          
-          <el-form-item prop="confirmPassword">
-            <el-input
-              v-model="step1Form.confirmPassword"
-              type="password"
-              placeholder="请确认密码"
-              size="large"
-              :prefix-icon="Lock"
-              show-password
-            />
-          </el-form-item>
-          
-          <el-form-item prop="smsCode">
-            <div class="sms-code-input">
-              <el-input
-                v-model="step1Form.smsCode"
-                placeholder="请输入短信验证码"
-                size="large"
-                :prefix-icon="Message"
-              />
-              <el-button
-                type="primary"
-                :loading="sendingSms"
-                :disabled="smsCountdown > 0"
-                @click="sendSmsCode"
-                class="sms-button"
-              >
-                {{ smsCountdown > 0 ? `${smsCountdown}秒后重试` : '获取验证码' }}
-              </el-button>
-            </div>
-          </el-form-item>
+          <el-form-item prop="username">
+          <el-input
+            v-model="step1Form.username"
+            placeholder="请输入用户名（3-20位）"
+            size="large"
+            :prefix-icon="User"
+          />
+        </el-form-item>
+        
+        <el-form-item prop="password">
+          <el-input
+            v-model="step1Form.password"
+            type="password"
+            placeholder="请输入密码（至少6位）"
+            size="large"
+            :prefix-icon="Lock"
+            show-password
+          />
+        </el-form-item>
+        
+        <el-form-item prop="confirmPassword">
+          <el-input
+            v-model="step1Form.confirmPassword"
+            type="password"
+            placeholder="请确认密码"
+            size="large"
+            :prefix-icon="Lock"
+            show-password
+          />
+        </el-form-item>
         </el-form>
       </div>
       
@@ -208,7 +188,7 @@
         <h2 class="success-title">注册成功！</h2>
         <p class="success-message">欢迎加入长途拼车平台</p>
         <div class="user-info">
-          <p>手机号：{{ step1Form.phone }}</p>
+          <p>用户名：{{ step1Form.username }}</p>
           <p>姓名：{{ step2Form.realName }}</p>
           <p>家乡：{{ step2Form.hometownProvince }}{{ step2Form.hometownCity }}</p>
         </div>
@@ -260,9 +240,8 @@ import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import {
-  Phone,
+  User,
   Lock,
-  Message,
   CircleCheck
 } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
@@ -312,10 +291,9 @@ const citiesData: Record<string, Array<{value: string, label: string}>> = {
 }
 
 const step1Form = reactive({
-  phone: '',
+  username: '',
   password: '',
-  confirmPassword: '',
-  smsCode: ''
+  confirmPassword: ''
 })
 
 const step2Form = reactive({
@@ -338,12 +316,11 @@ const currentCities = computed(() => {
   return citiesData[step2Form.currentProvince] || []
 })
 
-const validatePhone = (rule: any, value: string, callback: any) => {
-  const phoneRegex = /^1[3-9]\d{9}$/
+const validateUsername = (rule: any, value: string, callback: any) => {
   if (!value) {
-    callback(new Error('请输入手机号'))
-  } else if (!phoneRegex.test(value)) {
-    callback(new Error('手机号格式不正确'))
+    callback(new Error('请输入用户名'))
+  } else if (value.length < 3 || value.length > 20) {
+    callback(new Error('用户名长度3-20位'))
   } else {
     callback()
   }
@@ -370,18 +347,14 @@ const validateConfirmPassword = (rule: any, value: string, callback: any) => {
 }
 
 const step1Rules: FormRules = {
-  phone: [
-    { required: true, validator: validatePhone, trigger: 'blur' }
+  username: [
+    { required: true, validator: validateUsername, trigger: 'blur' }
   ],
   password: [
     { required: true, validator: validatePassword, trigger: 'blur' }
   ],
   confirmPassword: [
     { required: true, validator: validateConfirmPassword, trigger: 'blur' }
-  ],
-  smsCode: [
-    { required: true, message: '请输入验证码', trigger: 'blur' },
-    { len: 6, message: '验证码为6位数字', trigger: 'blur' }
   ]
 }
 
@@ -472,7 +445,7 @@ const handleRegister = async () => {
     loading.value = true
     
     const registerData = {
-      phone: step1Form.phone,
+      username: step1Form.username,
       password: step1Form.password,
       realName: step2Form.realName,
       gender: step2Form.gender,

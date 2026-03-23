@@ -4,7 +4,8 @@ import axios from 'axios'
 
 interface User {
   id: number
-  phone: string
+  username: string
+  phone?: string
   realName: string
   avatar: string
   rating: number
@@ -13,11 +14,12 @@ interface User {
 }
 
 interface LoginData {
-  phone: string
+  username: string
   password: string
 }
 
 interface RegisterData extends LoginData {
+  phone?: string
   realName?: string
   avatar?: string
   gender?: string
