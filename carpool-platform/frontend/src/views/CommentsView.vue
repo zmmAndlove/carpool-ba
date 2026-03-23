@@ -3,16 +3,16 @@
     <div class="comments-container">
       <el-page-header @back="$router.go(-1)" class="page-header">
         <template #content>
-          <span class="header-title">用户评论</span>
+          <span class="header-title">用户建议</span>
         </template>
       </el-page-header>
 
       <el-card class="comments-card" shadow="hover">
         <template #header>
           <div class="card-header">
-            <h3>用户评价</h3>
+            <h3>用户建议</h3>
             <el-button type="primary" @click="handleAddComment" v-if="authStore.isAuthenticated">
-              发布评论
+              提交建议
             </el-button>
           </div>
         </template>
@@ -23,7 +23,7 @@
             <el-skeleton :rows="5" animated />
           </div>
           <div v-else-if="comments.length === 0" class="empty-comments">
-            <el-empty description="暂无评论" />
+            <el-empty description="暂无建议" />
           </div>
           <div v-else class="comments">
             <el-card
@@ -157,14 +157,14 @@ const fetchComments = async () => {
 }
 
 const handleAddComment = () => {
-  ElMessageBox.prompt('请输入您的评论:', '发布评论', {
-    confirmButtonText: '发布',
+  ElMessageBox.prompt('请输入您的建议:', '提交建议', {
+    confirmButtonText: '提交',
     cancelButtonText: '取消',
-    inputPlaceholder: '分享您的拼车体验...',
+    inputPlaceholder: '分享您的建议和意见...',
     inputType: 'textarea',
     inputValidator: (value: string) => {
       if (!value || value.trim().length < 5) {
-        return '评论内容至少5个字符'
+        return '建议内容至少5个字符'
       }
       return true
     }
@@ -176,7 +176,7 @@ const handleAddComment = () => {
       //   rating: 5 // 可以添加评分选择
       // })
       
-      // 模拟添加评论
+      // 模拟添加建议
       const newComment = {
         id: Date.now(),
         username: authStore.user?.username || '用户',
@@ -189,12 +189,12 @@ const handleAddComment = () => {
       comments.value.unshift(newComment)
       total.value++
       
-      ElMessage.success('评论发布成功')
+      ElMessage.success('建议提交成功')
     } catch (error) {
-      ElMessage.error('发布评论失败')
+      ElMessage.error('提交建议失败')
     }
   }).catch(() => {
-    // 取消发布
+    // 取消提交
   })
 }
 
