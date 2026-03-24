@@ -24,4 +24,7 @@ public interface CommentMapper {
     
     @Select("SELECT * FROM comments WHERE id = #{id}")
     Comment findById(Long id);
+    
+    @Delete("DELETE FROM comments WHERE id = #{id}")
+    int deleteById(Long id);
 }

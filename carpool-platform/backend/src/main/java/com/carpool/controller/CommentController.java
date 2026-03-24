@@ -92,6 +92,45 @@ public class CommentController {
         }
     }
     
+    @PostMapping("/reply")
+    public ResponseEntity<?> replyToComment(@RequestBody Map<String, Object> request, @AuthenticationPrincipal UserDetails userDetails) {
+        try {
+            System.out.println("Reply request: " + request);
+            System.out.println("User details: " + userDetails.getUsername());
+            
+            java.util.Optional<com.carpool.entity.User> userOpt = userService.getUserByUsername(userDetails.getUsername());
+            System.out.println("User optional: " + userOpt);
+            com.carpool.entity.User user = userOpt.orElseThrow(() -> new RuntimeException("用户不存在"));
+            System.out.println("User: " + user.getUsername());
+            
+            String content = (String) request.get("content");
+            System.out.println("Content: " + content);
+            Long parentId = ((Number) request.get("parentId")).longValue();
+            System.out.println("Parent ID: " + parentId);
+            
+            Comment comment = commentService.replyToComment(user, content, parentId);
+            System.out.println("Comment: " + comment.getId());
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "回复发布成功");
+            response.put("comment", convertToResponse(comment));
+            
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            System.out.println("RuntimeException: " + e.getMessage());
+            e.printStackTrace();
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "回复发布失败: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
+        }
+    }
+    
     private Map<String, Object> convertToResponse(Comment comment) {
         Map<String, Object> response = new HashMap<>();
         response.put("id", comment.getId());
@@ -100,6 +139,7 @@ public class CommentController {
         response.put("content", comment.getContent());
         response.put("rating", comment.getRating());
         response.put("likes", comment.getLikes());
+        response.put("parentId", comment.getParentId());
         response.put("createdAt", comment.getCreatedAt());
         return response;
     }

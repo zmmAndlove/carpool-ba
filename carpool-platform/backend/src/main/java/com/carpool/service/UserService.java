@@ -4,10 +4,13 @@ import com.carpool.dto.UserDTO;
 import com.carpool.entity.User;
 import com.carpool.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -149,5 +152,18 @@ public class UserService {
             user.setUpdatedAt(java.time.LocalDateTime.now());
             userMapper.update(user);
         }
+    }
+    
+    public int getUserCount() {
+        return userMapper.count();
+    }
+    
+    public List<User> getUsers(int page, int size) {
+        int offset = (page - 1) * size;
+        return userMapper.findAll(size, offset);
+    }
+    
+    public double getAverageRating() {
+        return userMapper.getAverageRating();
     }
 }

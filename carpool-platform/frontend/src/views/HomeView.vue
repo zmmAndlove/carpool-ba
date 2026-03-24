@@ -103,7 +103,7 @@
                 <Van />
               </el-icon>
               <div class="stat-info">
-                <div class="stat-value">156</div>
+                <div class="stat-value">{{ stats.todayTrips }}</div>
                 <div class="stat-label">今日行程</div>
               </div>
             </div>
@@ -116,7 +116,7 @@
                 <User />
               </el-icon>
               <div class="stat-info">
-                <div class="stat-value">89%</div>
+                <div class="stat-value">{{ stats.matchRate }}%</div>
                 <div class="stat-label">成功匹配</div>
               </div>
             </div>
@@ -129,7 +129,7 @@
                 <Star />
               </el-icon>
               <div class="stat-info">
-                <div class="stat-value">4.8</div>
+                <div class="stat-value">{{ stats.averageRating.toFixed(1) }}</div>
                 <div class="stat-label">用户评分</div>
               </div>
             </div>
@@ -142,7 +142,7 @@
                 <Clock />
               </el-icon>
               <div class="stat-info">
-                <div class="stat-value">15分钟</div>
+                <div class="stat-value">{{ stats.averageWaitTime }}分钟</div>
                 <div class="stat-label">平均等待</div>
               </div>
             </div>
@@ -214,9 +214,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+import axios from 'axios'
 import {
   Search,
   Location,
@@ -279,6 +280,36 @@ const safetyFeatures = ref([
   }
 ])
 
+const stats = ref({
+  todayTrips: 0,
+  matchRate: 0,
+  averageRating: 0,
+  averageWaitTime: 0
+})
+
+const fetchStats = async () => {
+  try {
+    const response = await axios.get('/api/admin/dashboard');
+    const data = response.data;
+    
+    // 计算今日行程数量（假设从所有行程中过滤出今天的）
+    stats.value.todayTrips = data.tripCount;
+    
+    // 计算成功匹配率
+    if (data.tripCount > 0) {
+      stats.value.matchRate = Math.round((data.matchedTripCount / data.tripCount) * 100);
+    }
+    
+    // 用户平均评分
+    stats.value.averageRating = data.averageRating;
+    
+    // 平均等待时间（假设为15分钟）
+    stats.value.averageWaitTime = 15;
+  } catch (error) {
+    console.error('获取统计数据失败:', error);
+  }
+}
+
 const handleMenuSelect = (index: string) => {
   router.push(index)
 }
@@ -317,6 +348,10 @@ const handleRouteClick = (route: any) => {
     }
   })
 }
+
+onMounted(() => {
+  fetchStats();
+});
 </script>
 
 <style scoped>

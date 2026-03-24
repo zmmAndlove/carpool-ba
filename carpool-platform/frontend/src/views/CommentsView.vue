@@ -114,6 +114,32 @@
           </span>
         </template>
       </el-dialog>
+
+      <!-- 回复对话框 -->
+      <el-dialog
+        v-model="showReplyDialog"
+        :title="`回复 ${replyTarget?.username || ''}`"
+        width="500px"
+      >
+        <el-form>
+          <el-form-item label="回复内容">
+            <el-input
+              v-model="replyContent"
+              type="textarea"
+              :rows="4"
+              placeholder="输入您的回复..."
+              maxlength="500"
+              show-word-limit
+            />
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="cancelReply">取消</el-button>
+            <el-button type="primary" @click="submitReply">提交回复</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </Layout>
 </template>
@@ -192,6 +218,11 @@ const showAddCommentDialog = ref(false)
 const newCommentContent = ref('')
 const newCommentRating = ref(5)
 
+// 回复相关状态
+const showReplyDialog = ref(false)
+const replyContent = ref('')
+const replyTarget = ref<any>(null)
+
 const handleAddComment = () => {
   showAddCommentDialog.value = true
 }
@@ -235,7 +266,46 @@ const cancelSubmit = () => {
 }
 
 const handleReply = (comment: any) => {
-  ElMessage.info('回复功能开发中...')
+  replyTarget.value = comment
+  showReplyDialog.value = true
+}
+
+const submitReply = async () => {
+  if (!replyContent.value || replyContent.value.trim().length < 1) {
+    ElMessage.warning('回复内容不能为空')
+    return
+  }
+  
+  try {
+    // 调用API提交回复
+    await axios.post('/api/comments/reply', {
+      content: replyContent.value,
+      parentId: replyTarget.value.id
+    })
+    
+    // 重置表单
+    replyContent.value = ''
+    replyTarget.value = null
+    showReplyDialog.value = false
+    
+    // 重新获取评论列表
+    await fetchComments()
+    
+    ElMessage.success('回复发布成功')
+  } catch (error: any) {
+    if (error.response?.data?.error) {
+      ElMessage.error(error.response.data.error)
+    } else {
+      ElMessage.error('发布回复失败')
+    }
+  }
+}
+
+const cancelReply = () => {
+  // 重置表单
+  replyContent.value = ''
+  replyTarget.value = null
+  showReplyDialog.value = false
 }
 
 const handleLike = async (commentId: number) => {

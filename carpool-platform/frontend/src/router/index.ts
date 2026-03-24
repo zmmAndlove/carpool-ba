@@ -51,6 +51,30 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: '用户评论' }
   },
   {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/admin/AdminDashboard.vue'),
+    meta: { title: '管理后台' }
+  },
+  {
+    path: '/admin/users',
+    name: 'AdminUsers',
+    component: () => import('@/views/admin/AdminUsers.vue'),
+    meta: { title: '用户管理' }
+  },
+  {
+    path: '/admin/trips',
+    name: 'AdminTrips',
+    component: () => import('@/views/admin/AdminTrips.vue'),
+    meta: { title: '行程管理' }
+  },
+  {
+    path: '/admin/comments',
+    name: 'AdminComments',
+    component: () => import('@/views/admin/AdminComments.vue'),
+    meta: { title: '评论管理' }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/views/NotFoundView.vue'),

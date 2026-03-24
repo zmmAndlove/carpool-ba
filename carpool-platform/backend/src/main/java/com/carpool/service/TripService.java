@@ -282,4 +282,17 @@ public class TripService {
         
         return tripMapper.findById(tripId).orElse(trip);
     }
+    
+    public int getTripCount() {
+        return tripMapper.count();
+    }
+    
+    public List<Trip> getTrips(int page, int size) {
+        int offset = (page - 1) * size;
+        return tripMapper.findAll(size, offset);
+    }
+    
+    public int getMatchedTripCount() {
+        return tripMapper.countByStatus("matched");
+    }
 }

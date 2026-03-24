@@ -130,4 +130,14 @@ public interface TripMapper {
     
     @Delete("DELETE FROM trips WHERE id = #{id} AND user_id = #{userId}")
     int deleteByIdAndUserId(Long id, Long userId);
+    
+    @Select("SELECT COUNT(*) FROM trips")
+    int count();
+    
+    @Select("SELECT * FROM trips ORDER BY created_at DESC LIMIT #{limit} OFFSET #{offset}")
+    @ResultMap("tripResult")
+    List<Trip> findAll(@Param("limit") int limit, @Param("offset") int offset);
+    
+    @Select("SELECT COUNT(*) FROM trips WHERE status = #{status}")
+    int countByStatus(String status);
 }

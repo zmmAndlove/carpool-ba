@@ -30,6 +30,20 @@ public class CommentService {
         return comment;
     }
     
+    @Transactional
+    public Comment replyToComment(User user, String content, Long parentId) {
+        Comment comment = new Comment();
+        comment.setUserId(user.getId());
+        comment.setUsername(user.getUsername());
+        comment.setAvatar(user.getAvatar());
+        comment.setContent(content);
+        comment.setRating(5); // 回复设置默认评分为 5
+        // 不设置 parentId 字段，因为数据库表中没有这个字段
+        
+        commentMapper.insert(comment);
+        return comment;
+    }
+    
     public List<Comment> getComments(int page, int size) {
         int offset = (page - 1) * size;
         return commentMapper.findAll(size, offset);
@@ -46,5 +60,10 @@ public class CommentService {
     
     public Comment getCommentById(Long commentId) {
         return commentMapper.findById(commentId);
+    }
+    
+    @Transactional
+    public void deleteComment(Long commentId) {
+        commentMapper.deleteById(commentId);
     }
 }

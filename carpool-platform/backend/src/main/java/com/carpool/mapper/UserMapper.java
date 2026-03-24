@@ -90,4 +90,14 @@ public interface UserMapper {
     
     @Update("UPDATE users SET status = #{status}, updated_at = NOW() WHERE id = #{id}")
     int updateStatus(Long id, String status);
+    
+    @Select("SELECT COUNT(*) FROM users")
+    int count();
+    
+    @Select("SELECT * FROM users LIMIT #{limit} OFFSET #{offset}")
+    @ResultMap("userResult")
+    List<User> findAll(@Param("limit") int limit, @Param("offset") int offset);
+    
+    @Select("SELECT AVG(rating) FROM users")
+    double getAverageRating();
 }
