@@ -7,6 +7,7 @@ import com.carpool.service.CommentService;
 import com.carpool.service.TripService;
 import com.carpool.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class AdminController {
         this.commentService = commentService;
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/dashboard")
     public ResponseEntity<?> getDashboard() {
         try {
@@ -45,12 +47,16 @@ public class AdminController {
             // 获取用户平均评分
             double averageRating = userService.getAverageRating();
             
+            // 获取平均等待时间
+            int averageWaitTime = tripService.getAverageWaitTime();
+            
             Map<String, Object> dashboardData = new HashMap<>();
             dashboardData.put("userCount", userCount);
             dashboardData.put("tripCount", tripCount);
             dashboardData.put("commentCount", commentCount);
             dashboardData.put("matchedTripCount", matchedTripCount);
             dashboardData.put("averageRating", averageRating);
+            dashboardData.put("averageWaitTime", averageWaitTime);
             
             return ResponseEntity.ok(dashboardData);
         } catch (Exception e) {
@@ -60,6 +66,7 @@ public class AdminController {
         }
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")
     public ResponseEntity<?> getUsers(
             @RequestParam(defaultValue = "1") int page,
@@ -83,6 +90,7 @@ public class AdminController {
         }
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/trips")
     public ResponseEntity<?> getTrips(
             @RequestParam(defaultValue = "1") int page,
@@ -106,6 +114,7 @@ public class AdminController {
         }
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/comments")
     public ResponseEntity<?> getComments(
             @RequestParam(defaultValue = "1") int page,
@@ -129,6 +138,7 @@ public class AdminController {
         }
     }
     
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/comments/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
         try {

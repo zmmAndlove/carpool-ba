@@ -16,6 +16,8 @@ public class WebConfig implements WebMvcConfigurer {
         
         // 允许的域
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:3001");
+        config.addAllowedOrigin("http://localhost:3002");
         config.addAllowedOrigin("http://localhost:5173");
         
         // 允许的请求头

@@ -140,4 +140,7 @@ public interface TripMapper {
     
     @Select("SELECT COUNT(*) FROM trips WHERE status = #{status}")
     int countByStatus(String status);
+    
+    @Select("SELECT AVG(TIMESTAMPDIFF(MINUTE, created_at, updated_at)) FROM trips WHERE status = 'matched'")
+    Integer getAverageWaitTime();
 }

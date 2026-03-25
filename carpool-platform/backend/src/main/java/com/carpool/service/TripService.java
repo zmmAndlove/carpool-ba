@@ -295,4 +295,11 @@ public class TripService {
     public int getMatchedTripCount() {
         return tripMapper.countByStatus("matched");
     }
+    
+    public int getAverageWaitTime() {
+        // 从数据库中计算真实的平均等待时间
+        Integer averageWaitTime = tripMapper.getAverageWaitTime();
+        // 如果没有已匹配的行程，返回默认值15分钟
+        return averageWaitTime != null ? averageWaitTime : 15;
+    }
 }

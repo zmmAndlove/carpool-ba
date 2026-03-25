@@ -303,8 +303,8 @@ const fetchStats = async () => {
     // 用户平均评分
     stats.value.averageRating = data.averageRating;
     
-    // 平均等待时间（假设为15分钟）
-    stats.value.averageWaitTime = 15;
+    // 平均等待时间
+    stats.value.averageWaitTime = data.averageWaitTime || 15;
   } catch (error) {
     console.error('获取统计数据失败:', error);
   }
