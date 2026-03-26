@@ -38,7 +38,7 @@ public class CommentService {
         comment.setAvatar(user.getAvatar());
         comment.setContent(content);
         comment.setRating(5); // 回复设置默认评分为 5
-        // 不设置 parentId 字段，因为数据库表中没有这个字段
+        comment.setParentId(parentId); // 设置父评论ID
         
         commentMapper.insert(comment);
         return comment;

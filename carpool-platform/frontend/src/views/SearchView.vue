@@ -557,7 +557,7 @@ onMounted(() => {
 /* 响应式 */
 @media (max-width: 768px) {
   .search-container {
-    padding: 10px;
+    padding: 15px;
   }
   
   .search-bar {
@@ -565,12 +565,23 @@ onMounted(() => {
     border-radius: 16px;
   }
   
-  .search-header {
-    font-size: 16px;
-  }
-  
   .search-form :deep(.el-form-item) {
     margin-bottom: 12px;
+  }
+  
+  .search-form :deep(.el-input),
+  .search-form :deep(.el-date-picker),
+  .search-form :deep(.el-select) {
+    width: 100%;
+  }
+  
+  .search-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .search-actions :deep(.el-button) {
+    width: 100%;
   }
   
   .filter-card {
@@ -578,28 +589,28 @@ onMounted(() => {
     border-radius: 16px;
   }
   
-  .filter-header {
-    font-size: 16px;
-  }
-  
   .filter-content {
-    padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
   }
   
-  .filter-group {
-    margin-bottom: 15px;
+  .filter-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
   }
   
   .filter-label {
     font-size: 14px;
-    margin-bottom: 10px;
   }
   
   .results-header {
     margin-bottom: 20px;
   }
   
-  .results-title {
+  .results-header h2 {
     font-size: 20px;
   }
   
@@ -649,6 +660,15 @@ onMounted(() => {
     font-size: 11px;
   }
   
+  .trip-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .trip-actions :deep(.el-button) {
+    width: 100%;
+  }
+  
   .pagination-container {
     margin-top: 30px;
   }
@@ -656,11 +676,26 @@ onMounted(() => {
   .empty-state {
     padding: 40px 0;
   }
+  
+  /* 优化触摸交互 */
+  .trip-card,
+  .search-button,
+  .trip-actions :deep(.el-button) {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .trip-card:active,
+  .search-button:active,
+  .trip-actions :deep(.el-button):active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
 }
 
 @media (max-width: 480px) {
   .search-container {
-    padding: 8px;
+    padding: 12px;
   }
   
   .search-bar {
@@ -668,21 +703,12 @@ onMounted(() => {
     border-radius: 14px;
   }
   
-  .search-header {
-    font-size: 15px;
-    gap: 6px;
-  }
-  
-  .search-form :deep(.el-row) {
-    margin: 0 !important;
-  }
-  
-  .search-form :deep(.el-col) {
-    padding: 0 5px !important;
-  }
-  
   .search-form :deep(.el-form-item) {
     margin-bottom: 10px;
+  }
+  
+  .search-actions {
+    gap: 6px;
   }
   
   .filter-card {
@@ -690,28 +716,23 @@ onMounted(() => {
     border-radius: 14px;
   }
   
-  .filter-header {
-    font-size: 15px;
-  }
-  
   .filter-content {
-    padding: 12px;
+    gap: 12px;
   }
   
-  .filter-group {
-    margin-bottom: 12px;
+  .filter-item {
+    gap: 6px;
   }
   
   .filter-label {
     font-size: 13px;
-    margin-bottom: 8px;
   }
   
   .results-header {
     margin-bottom: 15px;
   }
   
-  .results-title {
+  .results-header h2 {
     font-size: 18px;
   }
   
@@ -774,14 +795,6 @@ onMounted(() => {
   
   .publisher-stats {
     font-size: 10px;
-  }
-  
-  .trip-actions {
-    flex-direction: column;
-  }
-  
-  .trip-actions :deep(.el-button) {
-    width: 100%;
   }
   
   .pagination-container {

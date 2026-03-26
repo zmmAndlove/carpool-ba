@@ -482,26 +482,52 @@ const handlePublish = async () => {
 
 @media (max-width: 768px) {
   .publish-container {
-    padding: 10px;
+    padding: 15px;
+  }
+  
+  .publish-form {
+    margin-top: 15px;
+  }
+  
+  .publish-form :deep(.el-form-item) {
+    margin-bottom: 16px;
+  }
+  
+  .publish-form :deep(.el-form-item__label) {
+    font-size: 14px;
+    width: 100px;
   }
   
   .form-section {
     padding: 15px;
     border-radius: 16px;
+    margin-bottom: 20px;
   }
   
   .section-title {
-    font-size: 18px;
-    margin-bottom: 20px;
+    font-size: 16px;
+    margin-bottom: 16px;
   }
   
-  .form-group {
-    margin-bottom: 20px;
+  .radio-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
   
-  .form-label {
-    font-size: 14px;
-    margin-bottom: 8px;
+  .radio-title {
+    font-size: 16px;
+  }
+  
+  .radio-desc {
+    font-size: 13px;
+  }
+  
+  .publish-form :deep(.el-input),
+  .publish-form :deep(.el-select),
+  .publish-form :deep(.el-date-picker),
+  .publish-form :deep(.el-input-number) {
+    width: 100%;
   }
   
   .form-actions {
@@ -512,57 +538,71 @@ const handlePublish = async () => {
   .submit-button {
     width: 100%;
     padding: 14px;
-  }
-  
-  .tips-section {
-    padding: 15px;
-    border-radius: 16px;
-  }
-  
-  .tips-title {
     font-size: 16px;
   }
   
-  .tips-list li {
-    font-size: 13px;
+  /* 优化触摸交互 */
+  .submit-button,
+  :deep(.el-radio) {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .submit-button:active,
+  :deep(.el-radio):active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }
 
 @media (max-width: 480px) {
   .publish-container {
-    padding: 8px;
+    padding: 12px;
+  }
+  
+  .publish-form {
+    margin-top: 12px;
+  }
+  
+  .publish-form :deep(.el-form-item) {
+    margin-bottom: 12px;
+  }
+  
+  .publish-form :deep(.el-form-item__label) {
+    font-size: 13px;
+    width: 90px;
   }
   
   .form-section {
     padding: 12px;
     border-radius: 14px;
+    margin-bottom: 16px;
   }
   
   .section-title {
-    font-size: 16px;
-    margin-bottom: 16px;
+    font-size: 15px;
+    margin-bottom: 12px;
   }
   
-  .form-group {
-    margin-bottom: 16px;
+  .radio-content {
+    gap: 6px;
   }
   
-  .form-label {
-    font-size: 13px;
-    margin-bottom: 6px;
+  .radio-title {
+    font-size: 15px;
   }
   
-  .form-group :deep(.el-input__wrapper),
-  .form-group :deep(.el-textarea__inner) {
+  .radio-desc {
+    font-size: 12px;
+  }
+  
+  .publish-form :deep(.el-input__wrapper),
+  .publish-form :deep(.el-textarea__inner) {
     padding: 8px 12px;
     font-size: 14px;
   }
   
-  .form-group :deep(.el-select) {
-    width: 100%;
-  }
-  
-  .form-group :deep(.el-date-picker) {
+  .publish-form :deep(.el-textarea) {
     width: 100%;
   }
   
@@ -576,24 +616,8 @@ const handlePublish = async () => {
     font-size: 15px;
   }
   
-  .tips-section {
-    padding: 12px;
-    border-radius: 14px;
-  }
-  
-  .tips-title {
-    font-size: 15px;
-    margin-bottom: 12px;
-  }
-  
-  .tips-list {
-    padding-left: 18px;
-  }
-  
-  .tips-list li {
+  .price-tip {
     font-size: 12px;
-    margin-bottom: 8px;
-    line-height: 1.5;
   }
 }
 </style>

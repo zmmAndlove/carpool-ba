@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import axios from 'axios'
+import request from '@/utils/request'
 
 interface User {
   id: number
@@ -37,17 +37,11 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const isAuthenticated = ref(!!token.value)
 
-  // 设置axios默认头部
-  if (token.value) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
-  }
-
   const setAuth = (newToken: string, userData: User) => {
     token.value = newToken
     user.value = userData
     isAuthenticated.value = true
     localStorage.setItem('token', newToken)
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
   }
 
   const clearAuth = () => {
@@ -55,12 +49,11 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     isAuthenticated.value = false
     localStorage.removeItem('token')
-    delete axios.defaults.headers.common['Authorization']
   }
 
   const login = async (data: LoginData) => {
     try {
-      const response = await axios.post('/api/auth/login', data)
+      const response = await request.post('/auth/login', data)
       const { token: newToken, user: userData } = response.data
       setAuth(newToken, userData)
       return response.data
@@ -72,7 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const register = async (data: RegisterData) => {
     try {
-      const response = await axios.post('/api/auth/register', data)
+      const response = await request.post('/auth/register', data)
       const { token: newToken, user: userData } = response.data
       setAuth(newToken, userData)
       return response.data
@@ -90,7 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!token.value) return null
     
     try {
-      const response = await axios.get('/api/auth/me')
+      const response = await request.get('/auth/me')
       user.value = response.data.user
       return user.value
     } catch (error) {
@@ -101,7 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const updateProfile = async (data: Partial<User>) => {
     try {
-      const response = await axios.put('/api/users/profile', data)
+      const response = await request.put('/users/profile', data)
       user.value = { ...user.value, ...response.data.user }
       return response.data
     } catch (error) {

@@ -289,7 +289,7 @@ const stats = ref({
 
 const fetchStats = async () => {
   try {
-    const response = await axios.get('/api/admin/dashboard');
+    const response = await axios.get('/api/admin/stats');
     const data = response.data;
     
     // 计算今日行程数量（假设从所有行程中过滤出今天的）
@@ -723,6 +723,16 @@ onMounted(() => {
     font-size: 16px;
   }
   
+  .search-form :deep(.el-form-item) {
+    margin-bottom: 12px;
+  }
+  
+  .search-form :deep(.el-input),
+  .search-form :deep(.el-date-picker),
+  .search-form :deep(.el-select) {
+    width: 100%;
+  }
+  
   .stats-row {
     margin-bottom: 30px;
   }
@@ -736,7 +746,14 @@ onMounted(() => {
   }
   
   .stat-content {
-    padding: 8px;
+    padding: 16px 12px;
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .stat-info {
+    text-align: center;
   }
   
   .popular-routes-card {
@@ -797,7 +814,7 @@ onMounted(() => {
   }
   
   .hero-button {
-    padding: 12px 24px;
+    padding: 14px 24px;
     font-size: 15px;
     width: 100%;
     max-width: 100%;
@@ -817,6 +834,12 @@ onMounted(() => {
     margin-bottom: 12px;
   }
   
+  .search-form :deep(.el-input),
+  .search-form :deep(.el-date-picker),
+  .search-form :deep(.el-select) {
+    width: 100%;
+  }
+  
   .stats-row {
     margin-bottom: 25px;
   }
@@ -830,8 +853,8 @@ onMounted(() => {
   }
   
   .stat-content {
-    gap: 12px;
-    padding: 6px;
+    gap: 8px;
+    padding: 12px 8px;
   }
   
   .stat-label {
@@ -882,6 +905,21 @@ onMounted(() => {
   .feature-desc {
     font-size: 12px;
     line-height: 1.5;
+  }
+  
+  /* 优化触摸交互 */
+  .hero-button,
+  .route-card,
+  .safety-feature {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .hero-button:active,
+  .route-card:active,
+  .safety-feature:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }
 </style>

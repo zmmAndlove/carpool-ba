@@ -11,6 +11,12 @@
           <span class="logo-subtext">· 节假日回家不再难</span>
         </div>
         
+        <!-- 移动端汉堡菜单 -->
+        <div class="mobile-menu-button" @click="drawerVisible = true">
+          <el-icon size="24"><Menu /></el-icon>
+        </div>
+        
+        <!-- 桌面端导航菜单 -->
         <div class="nav-menu">
           <el-menu
             :default-active="activeMenu"
@@ -51,6 +57,86 @@
         </div>
       </div>
     </el-header>
+    
+    <!-- 移动端侧边导航 -->
+    <el-drawer
+      v-model="drawerVisible"
+      direction="rtl"
+      size="80%"
+      class="mobile-drawer"
+    >
+      <div class="drawer-content">
+        <div class="drawer-header">
+          <div class="logo">
+            <el-icon size="24" color="#007AFF">
+              <Van />
+            </el-icon>
+            <span class="logo-text">长途拼车</span>
+          </div>
+          <el-button
+            type="text"
+            @click="drawerVisible = false"
+            class="close-button"
+          >
+            <el-icon size="24"><Close /></el-icon>
+          </el-button>
+        </div>
+        
+        <el-menu
+          :default-active="activeMenu"
+          @select="handleDrawerMenuSelect"
+          class="drawer-menu"
+        >
+          <el-menu-item index="/">
+            <el-icon><Van /></el-icon>
+            <span>首页</span>
+          </el-menu-item>
+          <el-menu-item index="/search">
+            <el-icon><Search /></el-icon>
+            <span>找行程</span>
+          </el-menu-item>
+          <el-menu-item index="/publish">
+            <el-icon><Edit /></el-icon>
+            <span>发布行程</span>
+          </el-menu-item>
+          <el-menu-item index="/comments">
+            <el-icon><ChatRound /></el-icon>
+            <span>建议</span>
+          </el-menu-item>
+          
+          <el-divider />
+          
+          <template v-if="authStore.isAuthenticated">
+            <el-menu-item index="/user">
+              <el-icon><User /></el-icon>
+              <span>个人中心</span>
+            </el-menu-item>
+            <el-menu-item index="/user?tab=trips">
+              <el-icon><Van /></el-icon>
+              <span>我的行程</span>
+            </el-menu-item>
+            <el-menu-item index="/user?tab=messages">
+              <el-icon><Bell /></el-icon>
+              <span>消息中心</span>
+            </el-menu-item>
+            <el-menu-item @click="handleLogout">
+              <el-icon><SwitchButton /></el-icon>
+              <span>退出登录</span>
+            </el-menu-item>
+          </template>
+          <template v-else>
+            <el-menu-item @click="$router.push('/login')">
+              <el-icon><User /></el-icon>
+              <span>登录</span>
+            </el-menu-item>
+            <el-menu-item @click="$router.push('/register')">
+              <el-icon><Plus /></el-icon>
+              <span>注册</span>
+            </el-menu-item>
+          </template>
+        </el-menu>
+      </div>
+    </el-drawer>
 
     <!-- 主内容区 -->
     <el-main class="layout-main">
@@ -93,12 +179,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import {
   Van,
-  ArrowDown
+  ArrowDown,
+  Menu,
+  Close,
+  Search,
+  Edit,
+  ChatRound,
+  User,
+  Bell,
+  SwitchButton,
+  Plus
 } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 
@@ -106,10 +201,19 @@ const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 
+// 移动端侧边栏状态
+const drawerVisible = ref(false)
+
 const activeMenu = computed(() => route.path)
 
 const handleMenuSelect = (index: string) => {
   router.push(index)
+}
+
+// 处理侧边栏菜单选择
+const handleDrawerMenuSelect = (index: string) => {
+  router.push(index)
+  drawerVisible.value = false
 }
 
 const handleUserCommand = (command: string) => {
@@ -124,11 +228,17 @@ const handleUserCommand = (command: string) => {
       router.push('/user?tab=messages')
       break
     case 'logout':
-      authStore.logout()
-      ElMessage.success('已退出登录')
-      router.push('/')
+      handleLogout()
       break
   }
+}
+
+// 处理退出登录
+const handleLogout = () => {
+  authStore.logout()
+  ElMessage.success('已退出登录')
+  router.push('/')
+  drawerVisible.value = false
 }
 </script>
 
@@ -187,6 +297,75 @@ const handleUserCommand = (command: string) => {
   height: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+}
+
+/* 移动端菜单按钮 */
+.mobile-menu-button {
+  display: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-button:hover {
+  background: rgba(0, 122, 255, 0.1);
+}
+
+/* 移动端侧边栏 */
+.mobile-drawer :deep(.el-drawer__header) {
+  display: none;
+}
+
+.drawer-content {
+  height: 100%;
+  padding: 20px;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.close-button {
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.drawer-menu {
+  width: 100%;
+}
+
+.drawer-menu :deep(.el-menu-item) {
+  height: 56px;
+  line-height: 56px;
+  font-size: 16px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-menu :deep(.el-menu-item:hover) {
+  background: rgba(0, 122, 255, 0.1);
+}
+
+.drawer-menu :deep(.el-menu-item.is-active) {
+  background: rgba(0, 122, 255, 0.15);
+  color: #007AFF;
+  font-weight: 600;
+}
+
+.drawer-menu :deep(.el-icon) {
+  margin-right: 12px;
+  font-size: 20px;
 }
 
 .logo {
@@ -405,13 +584,24 @@ const handleUserCommand = (command: string) => {
   }
   
   .header-content {
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
     padding: 12px 0;
   }
   
+  /* 显示移动端菜单按钮 */
+  .mobile-menu-button {
+    display: block;
+  }
+  
+  /* 隐藏桌面端导航菜单 */
+  .nav-menu {
+    display: none;
+  }
+  
   .logo {
     gap: 8px;
+    flex: 1;
   }
   
   .logo-text {
@@ -423,31 +613,12 @@ const handleUserCommand = (command: string) => {
     display: none;
   }
   
-  .nav-menu {
-    width: 100%;
-    min-width: auto;
-  }
-  
-  :deep(.el-menu) {
-    min-width: auto;
-  }
-  
-  :deep(.el-menu--horizontal > .el-menu-item) {
-    height: 48px;
-    line-height: 48px;
-    margin: 0 4px;
-    font-size: 14px;
-    padding: 0 12px;
-  }
-  
   .user-actions {
-    width: 100%;
-    justify-content: center;
     gap: 8px;
   }
   
   .glass-button {
-    padding: 8px 20px;
+    padding: 8px 16px;
     font-size: 14px;
   }
   
@@ -458,6 +629,7 @@ const handleUserCommand = (command: string) => {
   
   .user-name {
     font-size: 13px;
+    display: none;
   }
   
   .layout-main {
@@ -494,7 +666,7 @@ const handleUserCommand = (command: string) => {
   }
   
   .header-content {
-    gap: 10px;
+    gap: 8px;
     padding: 10px 0;
   }
   
@@ -506,23 +678,8 @@ const handleUserCommand = (command: string) => {
     font-size: 16px;
   }
   
-  .nav-menu {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  :deep(.el-menu) {
-    justify-content: flex-start;
-    padding: 0 5px;
-  }
-  
-  :deep(.el-menu--horizontal > .el-menu-item) {
-    height: 44px;
-    line-height: 44px;
-    margin: 0 2px;
-    font-size: 13px;
-    padding: 0 10px;
-    white-space: nowrap;
+  .mobile-menu-button {
+    padding: 6px;
   }
   
   .user-actions {
@@ -530,7 +687,7 @@ const handleUserCommand = (command: string) => {
   }
   
   .glass-button {
-    padding: 6px 16px;
+    padding: 6px 12px;
     font-size: 13px;
   }
   
@@ -569,6 +726,26 @@ const handleUserCommand = (command: string) => {
   .footer-bottom p {
     font-size: 11px;
     margin: 3px 0;
+  }
+  
+  /* 移动端侧边栏 */
+  .drawer-content {
+    padding: 15px;
+  }
+  
+  .drawer-header {
+    margin-bottom: 20px;
+  }
+  
+  .drawer-menu :deep(.el-menu-item) {
+    height: 52px;
+    line-height: 52px;
+    font-size: 15px;
+  }
+  
+  .drawer-menu :deep(.el-icon) {
+    margin-right: 10px;
+    font-size: 18px;
   }
 }
 </style>

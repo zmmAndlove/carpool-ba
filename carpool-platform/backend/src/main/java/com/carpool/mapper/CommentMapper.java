@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface CommentMapper {
     
-    @Insert("INSERT INTO comments (user_id, username, avatar, content, rating, likes, created_at, updated_at) " +
-            "VALUES (#{userId}, #{username}, #{avatar}, #{content}, #{rating}, #{likes}, #{createdAt}, #{updatedAt})")
+    @Insert("INSERT INTO comments (user_id, username, avatar, content, rating, likes, parent_id, created_at, updated_at) " +
+            "VALUES (#{userId}, #{username}, #{avatar}, #{content}, #{rating}, #{likes}, #{parentId}, #{createdAt}, #{updatedAt})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insert(Comment comment);
     
