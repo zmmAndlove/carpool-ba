@@ -289,7 +289,7 @@ const stats = ref({
 
 const fetchStats = async () => {
   try {
-    const response = await axios.get('/api/admin/stats');
+    const response = await axios.get('/api/public/stats');
     const data = response.data;
     
     // 计算今日行程数量（假设从所有行程中过滤出今天的）
