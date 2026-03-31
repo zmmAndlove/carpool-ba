@@ -11,14 +11,14 @@
               type="primary"
               size="large"
               @click="$router.push('/publish')"
-              class="hero-button"
+              class="hero-button pixel-button"
             >
               发布行程
             </el-button>
             <el-button
               size="large"
               @click="$router.push('/search')"
-              class="hero-button secondary"
+              class="hero-button secondary pixel-button"
             >
               寻找行程
             </el-button>
@@ -27,13 +27,11 @@
       </div>
 
       <!-- 快速搜索区 -->
-      <el-card class="search-card" shadow="hover">
-        <template #header>
-          <div class="search-header">
-            <el-icon><Search /></el-icon>
-            <span>快速搜索行程</span>
-          </div>
-        </template>
+      <div class="search-card pixel pixel-strong">
+        <div class="search-header">
+          <el-icon><Search /></el-icon>
+          <span>快速搜索行程</span>
+        </div>
         
         <el-form :model="searchForm" class="search-form">
           <el-row :gutter="20">
@@ -43,6 +41,7 @@
                   v-model="searchForm.from"
                   placeholder="出发地"
                   :prefix-icon="Location"
+                  class="pixel-input"
                 />
               </el-form-item>
             </el-col>
@@ -52,6 +51,7 @@
                   v-model="searchForm.to"
                   placeholder="目的地"
                   :prefix-icon="Location"
+                  class="pixel-input"
                 />
               </el-form-item>
             </el-col>
@@ -92,14 +92,14 @@
             </el-col>
           </el-row>
         </el-form>
-      </el-card>
+      </div>
 
       <!-- 数据统计 -->
       <el-row :gutter="20" class="stats-row">
         <el-col :xs="12" :sm="6">
-          <el-card shadow="hover" class="stat-card">
+          <div class="stat-card pixel pixel-strong">
             <div class="stat-content">
-              <el-icon class="stat-icon" color="#007AFF">
+              <el-icon class="stat-icon" color="#4CAF50">
                 <Van />
               </el-icon>
               <div class="stat-info">
@@ -107,12 +107,12 @@
                 <div class="stat-label">今日行程</div>
               </div>
             </div>
-          </el-card>
+          </div>
         </el-col>
         <el-col :xs="12" :sm="6">
-          <el-card shadow="hover" class="stat-card">
+          <div class="stat-card pixel pixel-strong">
             <div class="stat-content">
-              <el-icon class="stat-icon" color="#34C759">
+              <el-icon class="stat-icon" color="#8BC34A">
                 <User />
               </el-icon>
               <div class="stat-info">
@@ -120,12 +120,12 @@
                 <div class="stat-label">成功匹配</div>
               </div>
             </div>
-          </el-card>
+          </div>
         </el-col>
         <el-col :xs="12" :sm="6">
-          <el-card shadow="hover" class="stat-card">
+          <div class="stat-card pixel pixel-strong">
             <div class="stat-content">
-              <el-icon class="stat-icon" color="#FF9500">
+              <el-icon class="stat-icon" color="#FF9800">
                 <Star />
               </el-icon>
               <div class="stat-info">
@@ -133,12 +133,12 @@
                 <div class="stat-label">用户评分</div>
               </div>
             </div>
-          </el-card>
+          </div>
         </el-col>
         <el-col :xs="12" :sm="6">
-          <el-card shadow="hover" class="stat-card">
+          <div class="stat-card pixel pixel-strong">
             <div class="stat-content">
-              <el-icon class="stat-icon" color="#FF3B30">
+              <el-icon class="stat-icon" color="#F44336">
                 <Clock />
               </el-icon>
               <div class="stat-info">
@@ -146,18 +146,16 @@
                 <div class="stat-label">平均等待</div>
               </div>
             </div>
-          </el-card>
+          </div>
         </el-col>
       </el-row>
 
       <!-- 热门路线 -->
-      <el-card class="popular-routes-card" shadow="hover">
-        <template #header>
-          <div class="routes-header">
-            <span>热门路线</span>
-            <el-link type="primary" @click="$router.push('/search')">查看全部</el-link>
-          </div>
-        </template>
+      <div class="popular-routes-card pixel pixel-strong">
+        <div class="routes-header">
+          <span>热门路线</span>
+          <el-link type="primary" @click="$router.push('/search')">查看全部</el-link>
+        </div>
         
         <el-row :gutter="20">
           <el-col
@@ -168,9 +166,8 @@
             :md="8"
             :lg="4"
           >
-            <el-card
-              class="route-card"
-              shadow="hover"
+            <div
+              class="route-card pixel"
               @click="handleRouteClick(route)"
             >
               <div class="route-content">
@@ -180,16 +177,16 @@
                 </el-tag>
                 <p class="route-price">约 {{ route.price }}</p>
               </div>
-            </el-card>
+            </div>
           </el-col>
         </el-row>
-      </el-card>
+      </div>
 
       <!-- 安全保障 -->
-      <el-card class="safety-card" shadow="hover">
-        <template #header>
+      <div class="safety-card pixel pixel-strong">
+        <div class="safety-header">
           <span>安全保障</span>
-        </template>
+        </div>
         
         <el-row :gutter="40">
           <el-col
@@ -199,7 +196,7 @@
             :sm="12"
             :md="6"
           >
-            <div class="safety-feature">
+            <div class="safety-feature pixel">
               <el-icon :size="40" :color="feature.color">
                 <component :is="feature.icon" />
               </el-icon>
@@ -208,7 +205,7 @@
             </div>
           </el-col>
         </el-row>
-      </el-card>
+      </div>
 
   </Layout>
 </template>
@@ -355,42 +352,25 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.home-main {
-  width: 100%;
-}
-
 /* 主内容区样式 */
 .hero-section {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: var(--bg0);
+  background-image: 
+    linear-gradient(45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg1) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
   padding: 80px 20px;
   text-align: center;
-  color: white;
+  color: var(--text-1);
   position: relative;
-  overflow: hidden;
-  min-height: 500px;
+  min-height: 450px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(0, 122, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(52, 199, 89, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(255, 149, 0, 0.1) 0%, transparent 50%);
-  animation: float 15s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  33% { transform: translate(30px, -30px) rotate(120deg); }
-  66% { transform: translate(-20px, 20px) rotate(240deg); }
+  border-bottom: 3px solid var(--border-dark);
 }
 
 .hero-content {
@@ -401,23 +381,20 @@ onMounted(() => {
 }
 
 .hero-title {
-  font-size: 56px;
-  font-weight: 800;
+  font-size: 36px;
+  font-weight: bold;
   margin-bottom: 20px;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  letter-spacing: -1px;
-  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+  color: var(--brand);
+  font-family: 'Press Start 2P', cursive;
 }
 
 .hero-subtitle {
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 40px;
-  opacity: 0.9;
-  font-weight: 300;
-  letter-spacing: 0.5px;
+  color: var(--text-2);
+  font-family: 'Press Start 2P', cursive;
+  line-height: 1.4;
 }
 
 .hero-actions {
@@ -428,35 +405,17 @@ onMounted(() => {
 }
 
 .hero-button {
-  padding: 18px 48px;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 12px;
-  box-shadow: 
-    0 8px 32px rgba(0, 122, 255, 0.4),
-    0 4px 16px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.hero-button:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 
-    0 12px 40px rgba(0, 122, 255, 0.5),
-    0 6px 20px rgba(0, 0, 0, 0.3);
+  padding: 14px 32px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Press Start 2P', cursive;
+  transition: all 0.1s ease;
 }
 
 .hero-button.secondary {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  backdrop-filter: blur(10px);
-}
-
-.hero-button.secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: var(--pixel-bg) !important;
+  color: var(--text-1) !important;
+  border-color: var(--border-dark) !important;
 }
 
 /* 搜索卡片 */
@@ -465,37 +424,28 @@ onMounted(() => {
   max-width: 1200px;
   position: relative;
   z-index: 2;
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  transition: all 0.1s ease;
+}
+
+.search-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
 }
 
 .search-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-1);
+  margin-bottom: 20px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .search-form {
-  margin-top: 20px;
-}
-
-/* 3D图标样式 */
-:deep(.el-icon) {
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:deep(.el-icon:hover) {
-  transform: translateY(-2px) scale(1.1);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.25));
+  margin-top: 10px;
 }
 
 /* 统计卡片 */
@@ -504,45 +454,30 @@ onMounted(() => {
 }
 
 .stat-card {
-  border-radius: 20px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 20px;
+  transition: all 0.1s ease;
+  cursor: pointer;
 }
 
 .stat-card:hover {
-  transform: translateY(-8px) rotateX(5deg);
-  box-shadow: 
-    0 12px 32px rgba(0, 0, 0, 0.15),
-    0 6px 16px rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.9);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
 }
 
 .stat-content {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   padding: 10px;
 }
 
 .stat-icon {
-  font-size: 48px;
-  filter: 
-    drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2)),
-    drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 40px;
+  transition: all 0.1s ease;
 }
 
 .stat-card:hover .stat-icon {
-  transform: scale(1.15) translateY(-4px);
-  filter: 
-    drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3)),
-    drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+  transform: scale(1.1);
 }
 
 .stat-info {
@@ -550,138 +485,136 @@ onMounted(() => {
 }
 
 .stat-value {
-  font-size: 32px;
-  font-weight: 800;
-  color: #1a1a2e;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--text-1);
   margin-bottom: 5px;
-  letter-spacing: -0.5px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .stat-label {
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
+  font-size: 12px;
+  color: var(--text-2);
+  font-family: 'Press Start 2P', cursive;
 }
 
 /* 热门路线 */
 .popular-routes-card {
   margin-bottom: 40px;
-  border-radius: 20px;
-  backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  transition: all 0.1s ease;
+}
+
+.popular-routes-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
 }
 
 .routes-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-1);
+  margin-bottom: 20px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .route-card {
-  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid transparent;
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.06),
-    0 1px 4px rgba(0, 0, 0, 0.03);
+  transition: all 0.1s ease;
+  margin-bottom: 16px;
+  padding: 16px;
 }
 
 .route-card:hover {
-  transform: translateY(-6px) rotateY(3deg);
-  border-color: rgba(0, 122, 255, 0.3);
-  box-shadow: 
-    0 12px 32px rgba(0, 122, 255, 0.2),
-    0 6px 16px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.9);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
+  background: var(--pixel-hover);
 }
 
 .route-content {
-  padding: 24px;
+  padding: 8px;
 }
 
 .route-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-1);
   margin-bottom: 12px;
-  letter-spacing: -0.3px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .route-tag {
   margin-bottom: 12px;
-  backdrop-filter: blur(8px);
+  font-size: 10px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .route-price {
-  font-size: 15px;
-  color: #666;
+  font-size: 12px;
+  color: var(--text-2);
   margin: 0;
-  font-weight: 500;
+  font-family: 'Press Start 2P', cursive;
 }
 
 /* 安全保障 */
 .safety-card {
   margin-bottom: 40px;
-  border-radius: 20px;
-  backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  transition: all 0.1s ease;
+}
+
+.safety-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
+}
+
+.safety-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-1);
+  margin-bottom: 20px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .safety-feature {
   text-align: center;
-  padding: 24px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.1s ease;
+  margin-bottom: 16px;
 }
 
 .safety-feature:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.8);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
+  background: var(--pixel-hover);
 }
 
 .safety-feature :deep(.el-icon) {
-  font-size: 56px;
-  filter: 
-    drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25)),
-    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 48px;
+  transition: all 0.1s ease;
 }
 
 .safety-feature:hover :deep(.el-icon) {
-  transform: scale(1.2) translateY(-6px);
-  filter: 
-    drop-shadow(0 12px 28px rgba(0, 0, 0, 0.35)),
-    drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+  transform: scale(1.1);
 }
 
 .feature-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin: 20px 0 12px;
-  letter-spacing: -0.3px;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-1);
+  margin: 16px 0 8px;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .feature-desc {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.7;
+  font-size: 11px;
+  color: var(--text-2);
+  line-height: 1.4;
   margin: 0;
-  font-weight: 400;
+  font-family: 'Press Start 2P', cursive;
 }
 
 /* 响应式 */
@@ -692,12 +625,12 @@ onMounted(() => {
   }
   
   .hero-title {
-    font-size: 32px;
-    letter-spacing: -0.5px;
+    font-size: 24px;
+    line-height: 1.3;
   }
   
   .hero-subtitle {
-    font-size: 16px;
+    font-size: 12px;
     margin-bottom: 32px;
   }
   
@@ -708,126 +641,19 @@ onMounted(() => {
   }
   
   .hero-button {
-    padding: 14px 32px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 12px;
     width: 100%;
     max-width: 280px;
   }
   
   .search-card {
     margin: -30px 10px 30px;
-    border-radius: 16px;
-  }
-  
-  .search-header {
-    font-size: 16px;
-  }
-  
-  .search-form :deep(.el-form-item) {
-    margin-bottom: 12px;
-  }
-  
-  .search-form :deep(.el-input),
-  .search-form :deep(.el-date-picker),
-  .search-form :deep(.el-select) {
-    width: 100%;
-  }
-  
-  .stats-row {
-    margin-bottom: 30px;
-  }
-  
-  .stat-value {
-    font-size: 28px;
-  }
-  
-  .stat-icon {
-    font-size: 40px;
-  }
-  
-  .stat-content {
-    padding: 16px 12px;
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-  }
-  
-  .stat-info {
-    text-align: center;
-  }
-  
-  .popular-routes-card {
-    margin-bottom: 30px;
-    border-radius: 16px;
-  }
-  
-  .route-card {
-    margin-bottom: 12px;
-    border-radius: 12px;
-  }
-  
-  .route-content {
     padding: 16px;
   }
   
-  .route-title {
-    font-size: 16px;
-  }
-  
-  .safety-card {
-    margin-bottom: 30px;
-    border-radius: 16px;
-  }
-  
-  .safety-feature {
-    padding: 20px 12px;
-  }
-  
-  .safety-feature :deep(.el-icon) {
-    font-size: 48px;
-  }
-  
-  .feature-title {
-    font-size: 16px;
-    margin: 16px 0 10px;
-  }
-  
-  .feature-desc {
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-section {
-    min-height: 350px;
-    padding: 50px 12px;
-  }
-  
-  .hero-title {
-    font-size: 26px;
-    line-height: 1.3;
-  }
-  
-  .hero-subtitle {
-    font-size: 14px;
-    margin-bottom: 28px;
-  }
-  
-  .hero-button {
-    padding: 14px 24px;
-    font-size: 15px;
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  .search-card {
-    margin: -25px 8px 25px;
-    border-radius: 14px;
-  }
-  
   .search-header {
-    font-size: 15px;
-    gap: 8px;
+    font-size: 14px;
   }
   
   .search-form :deep(.el-form-item) {
@@ -841,7 +667,7 @@ onMounted(() => {
   }
   
   .stats-row {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
   }
   
   .stat-value {
@@ -853,40 +679,37 @@ onMounted(() => {
   }
   
   .stat-content {
-    gap: 8px;
     padding: 12px 8px;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
   }
   
-  .stat-label {
-    font-size: 12px;
+  .stat-info {
+    text-align: center;
   }
   
   .popular-routes-card {
-    margin-bottom: 25px;
-    border-radius: 14px;
+    margin-bottom: 30px;
+    padding: 16px;
   }
   
   .route-card {
-    margin-bottom: 10px;
-    border-radius: 10px;
+    margin-bottom: 12px;
+    padding: 12px;
   }
   
   .route-content {
-    padding: 14px;
+    padding: 6px;
   }
   
   .route-title {
-    font-size: 15px;
-    margin-bottom: 10px;
-  }
-  
-  .route-price {
-    font-size: 13px;
+    font-size: 12px;
   }
   
   .safety-card {
-    margin-bottom: 25px;
-    border-radius: 14px;
+    margin-bottom: 30px;
+    padding: 16px;
   }
   
   .safety-feature {
@@ -898,27 +721,138 @@ onMounted(() => {
   }
   
   .feature-title {
-    font-size: 15px;
-    margin: 14px 0 8px;
+    font-size: 12px;
+    margin: 12px 0 6px;
   }
   
   .feature-desc {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 350px;
+    padding: 50px 12px;
+  }
+  
+  .hero-title {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  
+  .hero-subtitle {
+    font-size: 10px;
+    margin-bottom: 28px;
+  }
+  
+  .hero-button {
+    padding: 10px 20px;
+    font-size: 11px;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .search-card {
+    margin: -25px 8px 25px;
+    padding: 14px;
+  }
+  
+  .search-header {
     font-size: 12px;
-    line-height: 1.5;
+    gap: 8px;
+  }
+  
+  .search-form :deep(.el-form-item) {
+    margin-bottom: 10px;
+  }
+  
+  .stats-row {
+    margin-bottom: 25px;
+  }
+  
+  .stat-value {
+    font-size: 20px;
+  }
+  
+  .stat-icon {
+    font-size: 32px;
+  }
+  
+  .stat-content {
+    gap: 6px;
+    padding: 8px 6px;
+  }
+  
+  .stat-label {
+    font-size: 10px;
+  }
+  
+  .popular-routes-card {
+    margin-bottom: 25px;
+    padding: 14px;
+  }
+  
+  .routes-header {
+    font-size: 12px;
+  }
+  
+  .route-card {
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  .route-title {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  
+  .route-price {
+    font-size: 10px;
+  }
+  
+  .safety-card {
+    margin-bottom: 25px;
+    padding: 14px;
+  }
+  
+  .safety-header {
+    font-size: 12px;
+  }
+  
+  .safety-feature {
+    padding: 12px 6px;
+  }
+  
+  .safety-feature :deep(.el-icon) {
+    font-size: 36px;
+  }
+  
+  .feature-title {
+    font-size: 11px;
+    margin: 10px 0 5px;
+  }
+  
+  .feature-desc {
+    font-size: 9px;
+    line-height: 1.3;
   }
   
   /* 优化触摸交互 */
   .hero-button,
   .route-card,
-  .safety-feature {
+  .safety-feature,
+  .stat-card {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
   
   .hero-button:active,
   .route-card:active,
-  .safety-feature:active {
-    transform: scale(0.98);
+  .safety-feature:active,
+  .stat-card:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
     transition: transform 0.1s ease;
   }
 }

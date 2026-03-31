@@ -242,49 +242,27 @@ const handleLogout = () => {
 }
 </script>
 
-<style>
-/* 全局样式覆盖，确保页脚显示正确 */
-.home-footer,
-.home-footer * {
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
-  color: #ffffff !important;
-}
-
-.footer-section h3 {
-  color: #ffffff !important;
-}
-
-.footer-section p,
-.footer-section ul li {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
-
-.footer-section ul li:hover {
-  color: rgba(255, 255, 255, 1) !important;
-}
-
-.footer-bottom p {
-  color: rgba(255, 255, 255, 0.5) !important;
-}
-</style>
-
 <style scoped>
+/* 像素风格布局 */
 .layout-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+  background: var(--bg0);
+  background-image: 
+    linear-gradient(45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg1) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
 .home-header {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 0 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  background: var(--pixel-bg);
+  border-bottom: 3px solid var(--border-dark);
+  box-shadow: var(--pixel-shadow);
+  padding: 12px 20px;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -305,12 +283,17 @@ const handleLogout = () => {
   display: none;
   cursor: pointer;
   padding: 8px;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--pixel-bg);
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s ease;
 }
 
 .mobile-menu-button:hover {
-  background: rgba(0, 122, 255, 0.1);
+  background: var(--pixel-hover);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 /* 移动端侧边栏 */
@@ -321,6 +304,14 @@ const handleLogout = () => {
 .drawer-content {
   height: 100%;
   padding: 20px;
+  background: var(--bg0);
+  background-image: 
+    linear-gradient(45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg1) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
 .drawer-header {
@@ -328,16 +319,23 @@ const handleLogout = () => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
 }
 
 .close-button {
   padding: 8px;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--pixel-bg);
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s ease;
 }
 
 .close-button:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--pixel-hover);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 .drawer-menu {
@@ -347,20 +345,26 @@ const handleLogout = () => {
 .drawer-menu :deep(.el-menu-item) {
   height: 56px;
   line-height: 56px;
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 8px;
-  border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--pixel-bg);
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s ease;
 }
 
 .drawer-menu :deep(.el-menu-item:hover) {
-  background: rgba(0, 122, 255, 0.1);
+  background: var(--pixel-hover);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--pixel-shadow-hover);
 }
 
 .drawer-menu :deep(.el-menu-item.is-active) {
-  background: rgba(0, 122, 255, 0.15);
-  color: #007AFF;
-  font-weight: 600;
+  background: var(--brand);
+  color: white;
+  border-color: var(--border-dark);
+  box-shadow: var(--pixel-shadow-hover);
 }
 
 .drawer-menu :deep(.el-icon) {
@@ -372,7 +376,7 @@ const handleLogout = () => {
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.1s ease;
 }
 
 .logo:hover {
@@ -380,21 +384,16 @@ const handleLogout = () => {
 }
 
 .logo-text {
-  font-size: 22px;
-  font-weight: 700;
-  color: #007AFF;
-  letter-spacing: -0.3px;
-  background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--brand);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 .logo-subtext {
-  color: #666;
-  font-size: 14px;
-  font-weight: 400;
-  opacity: 0.8;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: normal;
 }
 
 .nav-menu {
@@ -417,24 +416,29 @@ const handleLogout = () => {
 }
 
 :deep(.el-menu--horizontal > .el-menu-item) {
-  height: 64px;
-  line-height: 64px;
-  margin: 0 12px;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-  color: #333;
+  height: 48px;
+  line-height: 48px;
+  margin: 0 8px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--pixel-bg);
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s ease;
+  font-weight: normal;
+  color: var(--text-1);
 }
 
 :deep(.el-menu--horizontal > .el-menu-item:hover) {
-  background: rgba(0, 122, 255, 0.08);
-  color: #007AFF;
+  background: var(--pixel-hover);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 :deep(.el-menu--horizontal > .el-menu-item.is-active) {
-  background: rgba(0, 122, 255, 0.12);
-  color: #007AFF;
-  font-weight: 600;
+  background: var(--brand);
+  color: white;
+  border-color: var(--border-dark);
+  box-shadow: var(--pixel-shadow-hover);
 }
 
 .user-actions {
@@ -443,54 +447,29 @@ const handleLogout = () => {
   gap: 12px;
 }
 
-.glass-button {
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 122, 255, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: 500;
-}
-
-.glass-button:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 122, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
-}
-
-.glass-button.primary {
-  background: rgba(0, 122, 255, 0.9);
-  border-color: rgba(0, 122, 255, 0.5);
-}
-
-.glass-button.primary:hover {
-  background: rgba(0, 122, 255, 1);
-  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
-}
-
 .user-info {
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
   padding: 6px 12px;
-  border-radius: 10px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--pixel-bg);
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s ease;
 }
 
 .user-info:hover {
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--pixel-hover);
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 .user-name {
-  font-size: 14px;
-  color: #333;
-  font-weight: 500;
+  font-size: 12px;
+  color: var(--text-1);
+  font-weight: normal;
 }
 
 .layout-main {
@@ -499,17 +478,18 @@ const handleLogout = () => {
   margin: 0 auto;
   padding: 20px;
   width: 100%;
-  background: inherit;
+  background: transparent;
 }
 
-.layout-container .home-footer {
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
-  padding: 40px 20px 20px;
+/* 像素风格页脚 */
+.home-footer {
+  background: var(--bg2);
+  border-top: 3px solid var(--border-dark);
+  padding: 30px 20px 20px;
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: #ffffff !important;
+  color: var(--text-1);
   min-height: 300px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .footer-content {
@@ -517,76 +497,66 @@ const handleLogout = () => {
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 40px;
-  margin-bottom: 40px;
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
-  color: #ffffff !important;
+  gap: 30px;
+  margin-bottom: 30px;
 }
 
 .footer-section h3 {
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 16px;
-  color: #ffffff !important;
-  font-weight: 600;
-  letter-spacing: -0.3px;
+  color: var(--brand);
+  font-weight: bold;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 8px;
 }
 
 .footer-section p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 12px;
+  color: var(--text-2);
   margin: 8px 0;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .footer-section ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
 }
 
 .footer-section ul li {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 12px;
+  color: var(--text-2);
   margin: 8px 0;
-  transition: all 0.3s;
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
+  transition: all 0.1s ease;
 }
 
 .footer-section ul li:hover {
-  color: rgba(255, 255, 255, 1) !important;
+  color: var(--pixel-hover);
   transform: translateX(4px);
 }
 
 .footer-bottom {
   text-align: center;
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
-  color: #ffffff !important;
+  border-top: 2px solid var(--border);
+  color: var(--text-3);
 }
 
 .footer-bottom p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 11px;
   margin: 4px 0;
-  background-color: #1a1a2e !important;
-  background: #1a1a2e !important;
 }
 
+/* 响应式设计 */
 @media (max-width: 768px) {
   .home-header {
-    padding: 0 15px;
+    padding: 10px 15px;
   }
   
   .header-content {
     flex-direction: row;
-    gap: 12px;
-    padding: 12px 0;
+    gap: 10px;
   }
   
   /* 显示移动端菜单按钮 */
@@ -605,21 +575,16 @@ const handleLogout = () => {
   }
   
   .logo-text {
-    font-size: 18px;
+    font-size: 16px;
   }
   
   .logo-subtext {
-    font-size: 12px;
+    font-size: 10px;
     display: none;
   }
   
   .user-actions {
     gap: 8px;
-  }
-  
-  .glass-button {
-    padding: 8px 16px;
-    font-size: 14px;
   }
   
   .user-info {
@@ -628,7 +593,7 @@ const handleLogout = () => {
   }
   
   .user-name {
-    font-size: 13px;
+    font-size: 11px;
     display: none;
   }
   
@@ -637,37 +602,36 @@ const handleLogout = () => {
   }
   
   .home-footer {
-    padding: 30px 15px 15px;
+    padding: 25px 15px 15px;
   }
   
   .footer-content {
     grid-template-columns: 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
+    gap: 25px;
+    margin-bottom: 25px;
   }
   
   .footer-section h3 {
-    font-size: 16px;
+    font-size: 14px;
   }
   
   .footer-section p,
   .footer-section ul li {
-    font-size: 13px;
+    font-size: 11px;
   }
   
   .footer-bottom p {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .home-header {
-    padding: 0 12px;
+    padding: 8px 12px;
   }
   
   .header-content {
     gap: 8px;
-    padding: 10px 0;
   }
   
   .logo {
@@ -675,7 +639,7 @@ const handleLogout = () => {
   }
   
   .logo-text {
-    font-size: 16px;
+    font-size: 14px;
   }
   
   .mobile-menu-button {
@@ -684,11 +648,6 @@ const handleLogout = () => {
   
   .user-actions {
     gap: 6px;
-  }
-  
-  .glass-button {
-    padding: 6px 12px;
-    font-size: 13px;
   }
   
   .user-info {
@@ -700,22 +659,22 @@ const handleLogout = () => {
   }
   
   .home-footer {
-    padding: 25px 12px 12px;
+    padding: 20px 12px 12px;
   }
   
   .footer-content {
-    gap: 25px;
-    margin-bottom: 25px;
+    gap: 20px;
+    margin-bottom: 20px;
   }
   
   .footer-section h3 {
-    font-size: 15px;
+    font-size: 13px;
     margin-bottom: 12px;
   }
   
   .footer-section p,
   .footer-section ul li {
-    font-size: 12px;
+    font-size: 10px;
     margin: 6px 0;
   }
   
@@ -724,7 +683,7 @@ const handleLogout = () => {
   }
   
   .footer-bottom p {
-    font-size: 11px;
+    font-size: 9px;
     margin: 3px 0;
   }
   
@@ -738,9 +697,9 @@ const handleLogout = () => {
   }
   
   .drawer-menu :deep(.el-menu-item) {
-    height: 52px;
-    line-height: 52px;
-    font-size: 15px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 13px;
   }
   
   .drawer-menu :deep(.el-icon) {

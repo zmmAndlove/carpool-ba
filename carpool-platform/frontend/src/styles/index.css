@@ -1,0 +1,6 @@
+/* 引入像素风格字体 */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@import './tokens.css';
+@import './pixel.css';
+@import './element-plus-pixel.css';

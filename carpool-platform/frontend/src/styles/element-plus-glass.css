@@ -1,0 +1,109 @@
+/* Element Plus glass skin (global overrides) */
+:root {
+  --el-color-primary: var(--brand);
+}
+
+.el-card {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--radius-lg) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow-soft) !important;
+}
+
+.el-card.is-hover-shadow:hover,
+.el-card:hover {
+  border-color: var(--glass-border-strong) !important;
+  box-shadow: var(--glass-shadow) !important;
+  transform: translateY(-1px);
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select__wrapper {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: none !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(14px);
+}
+
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused,
+.el-textarea__inner:focus {
+  box-shadow: var(--focus-ring) !important;
+  border-color: rgba(0, 122, 255, 0.5) !important;
+}
+
+.el-button {
+  border-radius: 14px !important;
+}
+
+.el-button--default {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: var(--text-1) !important;
+  backdrop-filter: blur(14px);
+}
+
+.el-button--primary {
+  border: 1px solid rgba(0, 122, 255, 0.35) !important;
+  box-shadow: 0 10px 24px rgba(0, 122, 255, 0.24);
+}
+
+.el-dialog,
+.el-drawer {
+  background: rgba(20, 28, 52, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: var(--radius-lg);
+}
+
+.el-popover.el-popper,
+.el-dropdown__popper,
+.el-select__popper,
+.el-tooltip__popper {
+  background: rgba(18, 24, 44, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: var(--text-1) !important;
+}
+
+.el-menu {
+  background: transparent !important;
+}
+
+.el-menu-item,
+.el-sub-menu__title {
+  border-radius: 12px;
+}
+
+.el-table {
+  background: transparent !important;
+}
+
+.el-table__inner-wrapper,
+.el-table__header-wrapper,
+.el-table__body-wrapper {
+  background: transparent !important;
+}
+
+.el-table__header th.el-table__cell {
+  background: rgba(255, 255, 255, 0.10) !important;
+  color: var(--text-1) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.el-table__body td.el-table__cell {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-1) !important;
+}
+
+.el-table__row:hover td.el-table__cell {
+  background: rgba(255, 255, 255, 0.10) !important;
+}
