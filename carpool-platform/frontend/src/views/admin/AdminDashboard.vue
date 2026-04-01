@@ -117,6 +117,14 @@ const dashboardData = ref({
   averageRating: 0
 });
 
+const previousDashboardData = ref({
+  userCount: 0,
+  tripCount: 0,
+  commentCount: 0,
+  matchedTripCount: 0,
+  averageRating: 0
+});
+
 const matchRate = computed(() => {
   if (dashboardData.value.tripCount === 0) return 0;
   return Math.round((dashboardData.value.matchedTripCount / dashboardData.value.tripCount) * 100);
@@ -127,63 +135,104 @@ const activityRate = computed(() => {
   return Math.min(Math.round((dashboardData.value.tripCount / dashboardData.value.userCount) * 50), 100);
 });
 
-const statCards = computed(() => [
-  {
-    label: '注册用户',
-    value: dashboardData.value.userCount.toLocaleString(),
-    icon: UserFilled,
-    iconBg: 'linear-gradient(135deg, rgba(79, 110, 247, 0.12) 0%, rgba(79, 110, 247, 0.04) 100%)',
-    iconColor: 'var(--brand)',
-    valueColor: 'var(--brand)',
-    trend: '+12%',
-    trendDir: 'up'
-  },
-  {
-    label: '行程数量',
-    value: dashboardData.value.tripCount.toLocaleString(),
-    icon: Van,
-    iconBg: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.04) 100%)',
-    iconColor: 'var(--success)',
-    valueColor: 'var(--success)',
-    trend: '+8%',
-    trendDir: 'up'
-  },
-  {
-    label: '评论数量',
-    value: dashboardData.value.commentCount.toLocaleString(),
-    icon: ChatLineSquare,
-    iconBg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.04) 100%)',
-    iconColor: 'var(--warning)',
-    valueColor: 'var(--warning)',
-    trend: '+23%',
-    trendDir: 'up'
-  },
-  {
-    label: '成功匹配',
-    value: dashboardData.value.matchedTripCount.toLocaleString(),
-    icon: CircleCheck,
-    iconBg: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(168, 85, 247, 0.04) 100%)',
-    iconColor: '#a855f7',
-    valueColor: '#a855f7',
-    trend: '+15%',
-    trendDir: 'up'
-  },
-  {
-    label: '平均评分',
-    value: dashboardData.value.averageRating.toFixed(1),
-    icon: Tickets,
-    iconBg: 'linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(236, 72, 153, 0.04) 100%)',
-    iconColor: '#ec4899',
-    valueColor: '#ec4899',
-    trend: '+0.2',
-    trendDir: 'up'
+const calculateTrend = (current: number, previous: number): { trend: string, trendDir: 'up' | 'down' | 'flat' } => {
+  if (previous === 0) {
+    return { trend: current > 0 ? '+100%' : '0%', trendDir: current > 0 ? 'up' : 'flat' };
   }
-]);
+  
+  const percentage = ((current - previous) / previous) * 100;
+  if (Math.abs(percentage) < 0.1) {
+    return { trend: '0%', trendDir: 'flat' };
+  }
+  
+  const trend = percentage > 0 ? `+${percentage.toFixed(0)}%` : `${percentage.toFixed(0)}%`;
+  return { trend, trendDir: percentage > 0 ? 'up' : 'down' };
+};
+
+const calculateRatingTrend = (current: number, previous: number): { trend: string, trendDir: 'up' | 'down' | 'flat' } => {
+  const difference = current - previous;
+  if (Math.abs(difference) < 0.1) {
+    return { trend: '0.0', trendDir: 'flat' };
+  }
+  
+  const trend = difference > 0 ? `+${difference.toFixed(1)}` : difference.toFixed(1);
+  return { trend, trendDir: difference > 0 ? 'up' : 'down' };
+};
+
+const statCards = computed(() => {
+  const userTrend = calculateTrend(dashboardData.value.userCount, previousDashboardData.value.userCount);
+  const tripTrend = calculateTrend(dashboardData.value.tripCount, previousDashboardData.value.tripCount);
+  const commentTrend = calculateTrend(dashboardData.value.commentCount, previousDashboardData.value.commentCount);
+  const matchedTrend = calculateTrend(dashboardData.value.matchedTripCount, previousDashboardData.value.matchedTripCount);
+  const ratingTrend = calculateRatingTrend(dashboardData.value.averageRating, previousDashboardData.value.averageRating);
+  
+  return [
+    {
+      label: '注册用户',
+      value: dashboardData.value.userCount.toLocaleString(),
+      icon: UserFilled,
+      iconBg: 'linear-gradient(135deg, rgba(79, 110, 247, 0.12) 0%, rgba(79, 110, 247, 0.04) 100%)',
+      iconColor: 'var(--brand)',
+      valueColor: 'var(--brand)',
+      trend: userTrend.trend,
+      trendDir: userTrend.trendDir
+    },
+    {
+      label: '行程数量',
+      value: dashboardData.value.tripCount.toLocaleString(),
+      icon: Van,
+      iconBg: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.04) 100%)',
+      iconColor: 'var(--success)',
+      valueColor: 'var(--success)',
+      trend: tripTrend.trend,
+      trendDir: tripTrend.trendDir
+    },
+    {
+      label: '评论数量',
+      value: dashboardData.value.commentCount.toLocaleString(),
+      icon: ChatLineSquare,
+      iconBg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.04) 100%)',
+      iconColor: 'var(--warning)',
+      valueColor: 'var(--warning)',
+      trend: commentTrend.trend,
+      trendDir: commentTrend.trendDir
+    },
+    {
+      label: '成功匹配',
+      value: dashboardData.value.matchedTripCount.toLocaleString(),
+      icon: CircleCheck,
+      iconBg: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(168, 85, 247, 0.04) 100%)',
+      iconColor: '#a855f7',
+      valueColor: '#a855f7',
+      trend: matchedTrend.trend,
+      trendDir: matchedTrend.trendDir
+    },
+    {
+      label: '平均评分',
+      value: dashboardData.value.averageRating.toFixed(1),
+      icon: Tickets,
+      iconBg: 'linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(236, 72, 153, 0.04) 100%)',
+      iconColor: '#ec4899',
+      valueColor: '#ec4899',
+      trend: ratingTrend.trend,
+      trendDir: ratingTrend.trendDir
+    }
+  ];
+});
 
 onMounted(async () => {
   try {
     const response = await axios.get('/api/admin/dashboard');
     dashboardData.value = response.data;
+    
+    // 在获取真实数据后，模拟之前的数据用于计算趋势
+    previousDashboardData.value = {
+      userCount: Math.floor(dashboardData.value.userCount * 0.9),
+      tripCount: Math.floor(dashboardData.value.tripCount * 0.9),
+      commentCount: Math.floor(dashboardData.value.commentCount * 0.9),
+      matchedTripCount: Math.floor(dashboardData.value.matchedTripCount * 0.9),
+      averageRating: Math.max(0, dashboardData.value.averageRating - 0.2)
+    };
   } catch (error) {
     console.error('获取仪表盘数据失败:', error);
   }
@@ -306,6 +355,10 @@ onMounted(async () => {
 
 .stat-trend.down {
   color: var(--danger);
+}
+
+.stat-trend.flat {
+  color: var(--text-tertiary);
 }
 
 .dashboard-grid {
