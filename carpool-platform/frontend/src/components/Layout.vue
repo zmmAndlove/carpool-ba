@@ -153,12 +153,12 @@
         </div>
         
         <div class="footer-section">
-          <h3>安全保障</h3>
+          <h3>平台特色</h3>
           <ul>
-            <li>✅ 实名认证</li>
-            <li>✅ 行程分享</li>
-            <li>✅ 紧急联系</li>
-            <li>✅ 用户评价</li>
+            <li>⚡ 快速匹配</li>
+            <li>🔒 隐私保护</li>
+            <li>💬 直接沟通</li>
+            <li>🔑 自主决策</li>
           </ul>
         </div>
         

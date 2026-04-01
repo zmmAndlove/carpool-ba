@@ -3,6 +3,13 @@
     <!-- 主内容区 -->
       <!-- 主视觉区 -->
       <div class="hero-section">
+        <!-- 动态车辆背景 -->
+        <div class="hero-vehicles">
+          <div class="hero-vehicle"></div>
+          <div class="hero-vehicle"></div>
+          <div class="hero-vehicle"></div>
+        </div>
+        
         <div class="hero-content">
           <h1 class="hero-title">安全 · 便捷 · 同乡拼车</h1>
           <p class="hero-subtitle">节假日回家不再难，找到靠谱同乡，安全舒适回家</p>
@@ -182,21 +189,21 @@
         </el-row>
       </div>
 
-      <!-- 安全保障 -->
-      <div class="safety-card pixel pixel-strong">
-        <div class="safety-header">
-          <span>安全保障</span>
+      <!-- 平台特色 -->
+      <div class="platform-features-card pixel pixel-strong">
+        <div class="features-header">
+          <span>平台特色</span>
         </div>
         
         <el-row :gutter="40">
           <el-col
-            v-for="feature in safetyFeatures"
+            v-for="feature in platformFeatures"
             :key="feature.id"
             :xs="24"
             :sm="12"
             :md="6"
           >
-            <div class="safety-feature pixel">
+            <div class="feature-card pixel">
               <el-icon :size="40" :color="feature.color">
                 <component :is="feature.icon" />
               </el-icon>
@@ -221,11 +228,11 @@ import {
   User,
   Star,
   Clock,
-  Check,
-  UserFilled,
-  StarFilled,
+  Van,
+  Timer,
   Lock,
-  Van
+  ChatLineRound,
+  Key
 } from '@element-plus/icons-vue'
 import Layout from '@/components/Layout.vue'
 
@@ -246,33 +253,33 @@ const popularRoutes = ref([
   { id: 5, from: '武汉', to: '长沙', count: 18, price: '70-110元' }
 ])
 
-const safetyFeatures = ref([
-    {
+const platformFeatures = ref([
+  {
     id: 1,
-    icon: 'UserFilled',
-    title: '实名认证',
-    description: '所有用户均需实名认证，确保身份真实',
-    color: '#34C759'
+    icon: 'Timer',
+    title: '快速匹配',
+    description: '基于指定标准高效连接用户，快速找到合适的拼车伙伴',
+    color: '#FF9500'
   },
   {
     id: 2,
-    icon: 'User',
-    title: '同乡匹配',
-    description: '优先匹配同乡，增加信任感',
+    icon: 'Lock',
+    title: '隐私保护',
+    description: '不收集或存储任何用户个人信息，保护您的隐私安全',
     color: '#007AFF'
   },
   {
     id: 3,
-    icon: 'Van',
-    title: '行程分享',
-    description: '实时位置分享给家人，出行更安心',
-    color: '#FF9500'
+    icon: 'ChatLineRound',
+    title: '直接沟通',
+    description: '用户间可独立联系，建立直接的沟通渠道',
+    color: '#34C759'
   },
   {
     id: 4,
-    icon: 'StarFilled',
-    title: '评价系统',
-    description: '双向评价，建立诚信体系',
+    icon: 'Key',
+    title: '自主决策',
+    description: '用户拥有完全自由，自主决定互动方式和结果',
     color: '#FF3B30'
   }
 ])
@@ -355,13 +362,6 @@ onMounted(() => {
 /* 主内容区样式 */
 .hero-section {
   background: var(--bg0);
-  background-image: 
-    linear-gradient(45deg, var(--bg1) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--bg1) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--bg1) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--bg1) 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
   padding: 80px 20px;
   text-align: center;
   color: var(--text-1);
@@ -371,6 +371,104 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   border-bottom: 3px solid var(--border-dark);
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--bg1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--bg1) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--bg1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  z-index: 0;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+  z-index: 0;
+}
+
+.hero-vehicles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-vehicle {
+  position: absolute;
+  bottom: 20px;
+  width: 80px;
+  height: 40px;
+  background: var(--brand);
+  border-radius: 10px 30px 30px 10px;
+  animation: drive 30s linear infinite;
+  opacity: 0.7;
+}
+
+.hero-vehicle::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 50px;
+  height: 25px;
+  background: var(--bg0);
+  border-radius: 5px;
+}
+
+.hero-vehicle::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 10px;
+  width: 12px;
+  height: 12px;
+  background: var(--border-dark);
+  border-radius: 50%;
+  box-shadow: 25px 0 var(--border-dark), 50px 0 var(--border-dark);
+}
+
+.hero-vehicle:nth-child(2) {
+  animation-delay: 10s;
+  width: 100px;
+  height: 45px;
+  bottom: 30px;
+  opacity: 0.6;
+}
+
+.hero-vehicle:nth-child(3) {
+  animation-delay: 20s;
+  width: 70px;
+  height: 35px;
+  bottom: 15px;
+  opacity: 0.8;
+}
+
+@keyframes drive {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 100px));
+  }
 }
 
 .hero-content {
@@ -559,19 +657,19 @@ onMounted(() => {
   font-family: 'Press Start 2P', cursive;
 }
 
-/* 安全保障 */
-.safety-card {
+/* 平台特色 */
+.platform-features-card {
   margin-bottom: 40px;
   padding: 20px;
   transition: all 0.1s ease;
 }
 
-.safety-card:hover {
+.platform-features-card:hover {
   transform: translate(-1px, -1px);
   box-shadow: var(--pixel-shadow-hover);
 }
 
-.safety-header {
+.features-header {
   font-size: 16px;
   font-weight: bold;
   color: var(--text-1);
@@ -579,25 +677,25 @@ onMounted(() => {
   font-family: 'Press Start 2P', cursive;
 }
 
-.safety-feature {
+.feature-card {
   text-align: center;
   padding: 20px;
   transition: all 0.1s ease;
   margin-bottom: 16px;
 }
 
-.safety-feature:hover {
+.feature-card:hover {
   transform: translate(-1px, -1px);
   box-shadow: var(--pixel-shadow-hover);
   background: var(--pixel-hover);
 }
 
-.safety-feature :deep(.el-icon) {
+.feature-card :deep(.el-icon) {
   font-size: 48px;
   transition: all 0.1s ease;
 }
 
-.safety-feature:hover :deep(.el-icon) {
+.feature-card:hover :deep(.el-icon) {
   transform: scale(1.1);
 }
 
@@ -622,6 +720,39 @@ onMounted(() => {
   .hero-section {
     min-height: 400px;
     padding: 60px 15px;
+  }
+  
+  .hero-vehicle {
+    width: 60px;
+    height: 30px;
+    bottom: 15px;
+  }
+  
+  .hero-vehicle::before {
+    width: 35px;
+    height: 18px;
+    top: 3px;
+    left: 8px;
+  }
+  
+  .hero-vehicle::after {
+    width: 8px;
+    height: 8px;
+    bottom: -6px;
+    left: 8px;
+    box-shadow: 18px 0 var(--border-dark), 36px 0 var(--border-dark);
+  }
+  
+  .hero-vehicle:nth-child(2) {
+    width: 75px;
+    height: 35px;
+    bottom: 20px;
+  }
+  
+  .hero-vehicle:nth-child(3) {
+    width: 50px;
+    height: 25px;
+    bottom: 10px;
   }
   
   .hero-title {
@@ -707,16 +838,16 @@ onMounted(() => {
     font-size: 12px;
   }
   
-  .safety-card {
+  .platform-features-card {
     margin-bottom: 30px;
     padding: 16px;
   }
   
-  .safety-feature {
+  .feature-card {
     padding: 16px 8px;
   }
   
-  .safety-feature :deep(.el-icon) {
+  .feature-card :deep(.el-icon) {
     font-size: 40px;
   }
   
@@ -734,6 +865,39 @@ onMounted(() => {
   .hero-section {
     min-height: 350px;
     padding: 50px 12px;
+  }
+  
+  .hero-vehicle {
+    width: 45px;
+    height: 22px;
+    bottom: 10px;
+  }
+  
+  .hero-vehicle::before {
+    width: 25px;
+    height: 14px;
+    top: 2px;
+    left: 6px;
+  }
+  
+  .hero-vehicle::after {
+    width: 6px;
+    height: 6px;
+    bottom: -4px;
+    left: 6px;
+    box-shadow: 12px 0 var(--border-dark), 24px 0 var(--border-dark);
+  }
+  
+  .hero-vehicle:nth-child(2) {
+    width: 55px;
+    height: 26px;
+    bottom: 15px;
+  }
+  
+  .hero-vehicle:nth-child(3) {
+    width: 38px;
+    height: 18px;
+    bottom: 8px;
   }
   
   .hero-title {
@@ -811,20 +975,20 @@ onMounted(() => {
     font-size: 10px;
   }
   
-  .safety-card {
+  .platform-features-card {
     margin-bottom: 25px;
     padding: 14px;
   }
   
-  .safety-header {
+  .features-header {
     font-size: 12px;
   }
   
-  .safety-feature {
+  .feature-card {
     padding: 12px 6px;
   }
   
-  .safety-feature :deep(.el-icon) {
+  .feature-card :deep(.el-icon) {
     font-size: 36px;
   }
   
@@ -841,7 +1005,7 @@ onMounted(() => {
   /* 优化触摸交互 */
   .hero-button,
   .route-card,
-  .safety-feature,
+  .feature-card,
   .stat-card {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -849,7 +1013,7 @@ onMounted(() => {
   
   .hero-button:active,
   .route-card:active,
-  .safety-feature:active,
+  .feature-card:active,
   .stat-card:active {
     transform: translate(1px, 1px);
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
