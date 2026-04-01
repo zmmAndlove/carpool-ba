@@ -78,10 +78,11 @@ public class TripControllerTest {
         when(userService.getUserByPhone(anyString())).thenReturn(Optional.of(user));
         when(tripService.createTrip(anyLong(), any(TripDTO.class))).thenReturn(trip);
 
+        String departureTime = LocalDateTime.now().plusDays(1).toString();
         mockMvc.perform(post("/trips")
                 .header("Authorization", "Bearer test-token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"tripType\":\"offer\",\"departureProvince\":\"北京市\",\"departureCity\":\"北京市\",\"destinationProvince\":\"上海市\",\"destinationCity\":\"上海市\",\"departureTime\":\"2026-04-01T08:00:00\",\"seatsTotal\":4,\"pricePerPerson\":200}"))
+                .content("{\"tripType\":\"offer\",\"departureProvince\":\"北京市\",\"departureCity\":\"北京市\",\"destinationProvince\":\"上海市\",\"destinationCity\":\"上海市\",\"departureTime\":\"" + departureTime + "\",\"seatsTotal\":4,\"pricePerPerson\":200}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("行程发布成功"))
                 .andExpect(jsonPath("$.trip.id").value(1))
@@ -101,10 +102,11 @@ public class TripControllerTest {
         when(userService.getUserByPhone(anyString())).thenReturn(Optional.of(user));
         when(tripService.createTrip(anyLong(), any(TripDTO.class))).thenThrow(new RuntimeException("创建行程失败"));
 
+        String departureTime = LocalDateTime.now().plusDays(1).toString();
         mockMvc.perform(post("/trips")
                 .header("Authorization", "Bearer test-token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"tripType\":\"offer\",\"departureProvince\":\"北京市\",\"departureCity\":\"北京市\",\"destinationProvince\":\"上海市\",\"destinationCity\":\"上海市\",\"departureTime\":\"2026-04-01T08:00:00\",\"seatsTotal\":4,\"pricePerPerson\":200}"))
+                .content("{\"tripType\":\"offer\",\"departureProvince\":\"北京市\",\"departureCity\":\"北京市\",\"destinationProvince\":\"上海市\",\"destinationCity\":\"上海市\",\"departureTime\":\"" + departureTime + "\",\"seatsTotal\":4,\"pricePerPerson\":200}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("创建行程失败"));
     }
@@ -232,10 +234,11 @@ public class TripControllerTest {
         when(userService.getUserByPhone(anyString())).thenReturn(Optional.of(user));
         when(tripService.updateTrip(anyLong(), anyLong(), any(TripDTO.class))).thenReturn(trip);
 
+        String departureTime = LocalDateTime.now().plusDays(1).toString();
         mockMvc.perform(put("/trips/1")
                 .header("Authorization", "Bearer test-token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"tripType\":\"offer\",\"departureProvince\":\"北京市\",\"departureCity\":\"北京市\",\"destinationProvince\":\"上海市\",\"destinationCity\":\"上海市\",\"departureTime\":\"2026-04-01T08:00:00\",\"seatsTotal\":4,\"pricePerPerson\":250}"))
+                .content("{\"tripType\":\"offer\",\"departureProvince\":\"北京市\",\"departureCity\":\"北京市\",\"destinationProvince\":\"上海市\",\"destinationCity\":\"上海市\",\"departureTime\":\"" + departureTime + "\",\"seatsTotal\":4,\"pricePerPerson\":250}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("行程更新成功"))
                 .andExpect(jsonPath("$.trip.id").value(1));

@@ -72,7 +72,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            
+
             <el-form-item label="详细地址" prop="departureDetail">
               <el-input
                 v-model="publishForm.departureDetail"
@@ -114,7 +114,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            
+
             <el-form-item label="详细地址" prop="destinationDetail">
               <el-input
                 v-model="publishForm.destinationDetail"
@@ -286,9 +286,9 @@ const suggestedPrice = computed(() => {
   // 简单的价格计算逻辑
   const basePrice = 100
   const distanceFactor = 1.2
-  const timeFactor = publishForm.departureTime ? 
+  const timeFactor = publishForm.departureTime ?
     (new Date(publishForm.departureTime).getHours() < 12 ? 1 : 1.1) : 1
-  
+
   return Math.round(basePrice * distanceFactor * timeFactor / 10) * 10
 })
 
@@ -346,25 +346,25 @@ const disabledDate = (time: Date) => {
 
 const handlePublish = async () => {
   if (!publishFormRef.value) return
-  
+
   try {
     await publishFormRef.value.validate()
-    
+
     if (!authStore.isAuthenticated) {
       ElMessage.warning('请先登录')
       router.push('/login')
       return
     }
-    
+
     loading.value = true
-    
+
     const formData = {
       ...publishForm,
       departureTime: publishForm.departureTime ? publishForm.departureTime.toISOString() : null
     }
-    
+
     const response = await axios.post('/api/trips', formData)
-    
+
     ElMessage.success('行程发布成功')
     router.push(`/trip/${response.data.trip.id}`)
   } catch (error: any) {
@@ -385,239 +385,234 @@ const handlePublish = async () => {
 .publish-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--space-6);
 }
 
 .page-header {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 
 .header-title {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
 }
 
 .publish-card {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
+  border: none;
+  box-shadow: var(--shadow-card);
 }
 
 .publish-form {
-  margin-top: 20px;
+  margin-top: var(--space-5);
 }
 
 .form-section {
-  margin-bottom: 30px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  margin-bottom: var(--space-7);
+  padding: var(--space-5);
+  background: var(--bg-section);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
 }
 
 .section-title {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
+  margin: 0 0 var(--space-5) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  position: relative;
+  padding-left: 14px;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: var(--brand-gradient);
+  border-radius: 2px;
 }
 
 .radio-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .radio-title {
-  font-weight: 600;
-  color: #333;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
 }
 
 .radio-desc {
-  font-size: 14px;
-  color: #666;
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
 }
 
 .price-tip {
-  margin-top: 8px;
-  color: #67c23a;
-  font-size: 14px;
+  margin-top: var(--space-2);
+  color: var(--success);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .form-actions {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
 }
 
 .submit-button {
-  min-width: 150px;
+  min-width: 160px;
+  padding: 12px 32px;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
 }
 
-:deep(.el-input__wrapper) {
-  border-radius: 6px;
+::deep(.el-input__wrapper) {
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 1px var(--border-color) inset;
+  transition: var(--transition-fast);
 }
 
-:deep(.el-button) {
-  border-radius: 6px;
+::deep(.el-input__wrapper:hover) {
+  box-shadow: 0 0 0 1px var(--brand) inset;
 }
 
-:deep(.el-radio) {
+::deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px var(--brand) inset, 0 0 0 3px rgba(79, 110, 247, 0.1);
+}
+
+::deep(.el-button) {
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+}
+
+::deep(.el-radio) {
   display: flex;
   align-items: center;
   height: auto;
-  padding: 12px;
-  margin-bottom: 12px;
-  border: 1px solid #dcdfe6;
-  border-radius: 8px;
-  transition: all 0.3s;
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-fast);
+  background: var(--bg-card);
 }
 
-:deep(.el-radio:hover) {
-  border-color: #409eff;
+::deep(.el-radio:hover) {
+  border-color: var(--brand);
+  box-shadow: var(--shadow-card);
 }
 
-:deep(.el-radio.is-checked) {
-  border-color: #409eff;
-  background: #ecf5ff;
+::deep(.el-radio.is-checked) {
+  border-color: var(--brand);
+  background: linear-gradient(135deg, rgba(79, 110, 247, 0.04) 0%, rgba(56, 189, 248, 0.04) 100%);
+}
+
+::deep(.el-textarea__inner) {
+  border-radius: var(--radius-md);
+}
+
+::deep(.el-date-editor) {
+  width: 100% !important;
+}
+
+::deep(.el-input-number) {
+  width: 100%;
+}
+
+::deep(.el-form-item__label) {
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
 }
 
 @media (max-width: 768px) {
   .publish-container {
-    padding: 15px;
+    padding: var(--space-4);
   }
-  
+
   .publish-form {
-    margin-top: 15px;
+    margin-top: var(--space-4);
   }
-  
+
   .publish-form :deep(.el-form-item) {
-    margin-bottom: 16px;
+    margin-bottom: var(--space-4);
   }
-  
+
   .publish-form :deep(.el-form-item__label) {
-    font-size: 14px;
+    font-size: var(--font-size-sm);
     width: 100px;
   }
-  
+
   .form-section {
-    padding: 15px;
-    border-radius: 16px;
-    margin-bottom: 20px;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-5);
   }
-  
+
   .section-title {
-    font-size: 16px;
-    margin-bottom: 16px;
+    font-size: var(--font-size-md);
+    margin-bottom: var(--space-4);
   }
-  
+
   .radio-content {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: var(--space-2);
   }
-  
+
   .radio-title {
-    font-size: 16px;
+    font-size: var(--font-size-md);
   }
-  
+
   .radio-desc {
-    font-size: 13px;
+    font-size: var(--font-size-xs);
   }
-  
-  .publish-form :deep(.el-input),
-  .publish-form :deep(.el-select),
-  .publish-form :deep(.el-date-picker),
-  .publish-form :deep(.el-input-number) {
-    width: 100%;
-  }
-  
+
   .form-actions {
     flex-direction: column;
-    gap: 12px;
+    gap: var(--space-3);
   }
-  
+
   .submit-button {
     width: 100%;
     padding: 14px;
-    font-size: 16px;
-  }
-  
-  /* 优化触摸交互 */
-  .submit-button,
-  :deep(.el-radio) {
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  .submit-button:active,
-  :deep(.el-radio):active {
-    transform: scale(0.98);
-    transition: transform 0.1s ease;
+    font-size: var(--font-size-md);
   }
 }
 
 @media (max-width: 480px) {
   .publish-container {
-    padding: 12px;
+    padding: var(--space-3);
   }
-  
-  .publish-form {
-    margin-top: 12px;
-  }
-  
-  .publish-form :deep(.el-form-item) {
-    margin-bottom: 12px;
-  }
-  
-  .publish-form :deep(.el-form-item__label) {
-    font-size: 13px;
-    width: 90px;
-  }
-  
+
   .form-section {
-    padding: 12px;
-    border-radius: 14px;
-    margin-bottom: 16px;
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-4);
   }
-  
+
   .section-title {
-    font-size: 15px;
-    margin-bottom: 12px;
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-3);
   }
-  
-  .radio-content {
-    gap: 6px;
-  }
-  
-  .radio-title {
-    font-size: 15px;
-  }
-  
-  .radio-desc {
-    font-size: 12px;
-  }
-  
-  .publish-form :deep(.el-input__wrapper),
-  .publish-form :deep(.el-textarea__inner) {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
-  
-  .publish-form :deep(.el-textarea) {
-    width: 100%;
-  }
-  
-  .form-actions {
-    gap: 10px;
-  }
-  
+
   .submit-button {
     width: 100%;
     padding: 12px;
-    font-size: 15px;
+    font-size: var(--font-size-sm);
   }
-  
+
   .price-tip {
-    font-size: 12px;
+    font-size: var(--font-size-xs);
   }
 }
 </style>

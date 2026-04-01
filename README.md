@@ -2,41 +2,78 @@
 
 ## 项目简介
 
-长途拼车平台是一个基于前后端分离架构的Web应用，旨在为用户提供长途拼车服务，包括发布拼车信息、搜索拼车信息、用户认证等功能。
+长途拼车平台是一个基于前后端分离架构的 Web 应用，旨在为用户提供长途拼车服务，包括发布拼车信息、搜索拼车信息、用户认证、评论系统和管理后台等功能。
 
 ## 技术栈
 
 ### 前端技术栈
 - **框架**：Vue 3 + TypeScript
-- **构建工具**：Vite
+- **构建工具**：Vite 5
 - **UI组件库**：Element Plus
 - **状态管理**：Pinia
 - **路由**：Vue Router
 - **HTTP客户端**：Axios
 - **日期处理**：dayjs
+- **代码规范**：ESLint + Prettier
 
 ### 后端技术栈
-- **框架**：Spring Boot 3.2.0
-- **语言**：Java 17
-- **ORM**：MyBatis
+- **框架**：Spring Boot 2.7.15
+- **语言**：Java 8
+- **ORM**：MyBatis 2.2.2
 - **数据库**：MySQL 8.0.33
-- **安全**：Spring Security + JWT
+- **连接池**：Druid 1.2.20
+- **安全**：Spring Security + JWT (jjwt 0.12.3)
+- **缓存**：Spring Data Redis
+- **对象映射**：MapStruct 1.5.5
+- **工具库**：Lombok、Guava、Apache Commons Lang3
 - **依赖管理**：Maven
 
 ## 项目结构
 
 ```
 carpool-ba/
-├── carpool-complete-project/
-│   └── carpool-platform/
-│       ├── frontend/          # 前端项目
-│       ├── start-frontend.js  # 前端启动脚本
-│       └── start-backend.js   # 后端启动脚本
 ├── carpool-platform/
-│   ├── backend/               # 后端项目
-│   └── docker/                # Docker配置
-├── .gitignore                 # Git忽略文件
-└── README.md                  # 项目说明文档
+│   ├── frontend/              # 前端项目 (Vue 3 + TS + Element Plus)
+│   │   └── src/
+│   │       ├── views/         # 页面组件 (13个)
+│   │       │   ├── HomeView.vue          # 首页
+│   │       │   ├── LoginView.vue         # 登录
+│   │       │   ├── RegisterView.vue      # 注册
+│   │       │   ├── PublishView.vue       # 发布行程
+│   │       │   ├── SearchView.vue        # 搜索行程
+│   │       │   ├── TripDetailView.vue    # 行程详情
+│   │       │   ├── UserCenterView.vue    # 个人中心
+│   │       │   ├── CommentsView.vue      # 用户评论
+│   │       │   ├── NotFoundView.vue      # 404页面
+│   │       │   └── admin/                # 管理后台
+│   │       │       ├── AdminDashboard.vue # 管理面板
+│   │       │       ├── AdminUsers.vue    # 用户管理
+│   │       │       ├── AdminTrips.vue    # 行程管理
+│   │       │       └── AdminComments.vue # 评论管理
+│   │       ├── components/    # 公共组件
+│   │       ├── router/        # 路由配置
+│   │       ├── stores/        # Pinia 状态管理
+│   │       ├── styles/        # 样式文件（设计令牌、玻璃拟态主题）
+│   │       └── utils/         # 工具函数
+│   │
+│   ├── backend/               # 后端项目 (Spring Boot + MyBatis)
+│   │   └── src/main/java/com/carpool/
+│   │       ├── config/        # 配置层（Security、JWT、CORS）
+│   │       ├── controller/    # 控制层（Auth、Trip、Comment、Admin）
+│   │       ├── service/       # 服务层
+│   │       ├── mapper/        # MyBatis Mapper
+│   │       ├── entity/        # 实体类（User、Trip、Comment）
+│   │       └── dto/           # 数据传输对象
+│   │
+│   ├── deploy.sh              # 部署脚本
+│   ├── deploy-local.sh        # 本地部署
+│   ├── deploy-direct.sh       # 直接部署
+│   ├── simple-deploy.sh       # 简单部署
+│   ├── start-frontend.js      # 前端启动脚本
+│   └── start-backend.js       # 后端启动脚本
+├── package.json
+├── README.md
+└── test-login.ps1
 ```
 
 ## 功能特性
@@ -58,7 +95,7 @@ carpool-ba/
 
 ### 前置条件
 - **前端**：Node.js 16+，npm 7+
-- **后端**：Java 17+，Maven 3.6+
+- **后端**：Java 8+，Maven 3.6+
 - **数据库**：MySQL 8.0+
 
 ### 前端安装与运行

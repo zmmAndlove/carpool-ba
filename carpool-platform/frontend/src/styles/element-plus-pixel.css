@@ -1,300 +1,274 @@
-/* Element Plus 像素风格皮肤（全局覆盖） */
+/* ===== Element Plus 现代风格皮肤 ===== */
 
 :root {
-  --el-color-primary: var(--brand);
-  --el-color-success: var(--success);
-  --el-color-warning: var(--warning);
-  --el-color-danger: var(--danger);
-  --el-color-info: var(--brand2);
+  --el-color-primary: #4F6EF7;
+  --el-color-primary-light-3: #7B93FA;
+  --el-color-primary-light-5: #A3B5FC;
+  --el-color-primary-light-7: #C8D4FD;
+  --el-color-primary-light-8: #D9E2FE;
+  --el-color-primary-light-9: #EBF0FF;
+  --el-color-primary-dark-2: #3B54D4;
+  --el-color-success: #10B981;
+  --el-color-warning: #F59E0B;
+  --el-color-danger: #EF4444;
+  --el-color-info: #64748B;
+  --el-border-radius-base: 8px;
+  --el-border-radius-small: 6px;
+  --el-border-radius-round: 20px;
+  --el-font-family: var(--font-family);
+  --el-font-size-base: 14px;
+  --el-transition-duration: 0.25s;
 }
 
-/* 全局字体设置 */
-.el-button,
-.el-input,
-.el-select,
-.el-textarea,
-.el-card,
-.el-dialog,
-.el-table,
-.el-menu,
-.el-form,
-.el-message,
-.el-notification {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 12px !important;
-}
-
-/* 卡片样式 */
+/* ===== 卡片 ===== */
 .el-card {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--pixel-shadow) !important;
-  padding: var(--space-3) !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal) !important;
 }
 
 .el-card.is-hover-shadow:hover,
+.el-card.is-hover-shadow:focus,
 .el-card:hover {
-  border-color: var(--border-dark) !important;
-  box-shadow: var(--pixel-shadow-hover) !important;
-  transform: translate(-1px, -1px) !important;
-  transition: all 0.1s ease !important;
+  box-shadow: var(--shadow-card-hover) !important;
+  transform: translateY(-2px) !important;
 }
 
-/* 输入框样式 */
+.el-card__header {
+  border-bottom: 1px solid var(--border-light) !important;
+  padding: var(--space-4) var(--space-5) !important;
+}
+
+.el-card__body {
+  padding: var(--space-5) !important;
+}
+
+/* ===== 输入框 ===== */
 .el-input__wrapper,
-.el-textarea__inner,
-.el-select__wrapper {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
+.el-textarea__inner {
   border-radius: var(--radius-sm) !important;
-  box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.2) !important;
-  padding: 8px 12px !important;
+  box-shadow: none !important;
+  border: 1px solid var(--border-color) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.el-input__wrapper:hover,
+.el-textarea__inner:hover {
+  border-color: var(--text-tertiary) !important;
 }
 
 .el-input__wrapper.is-focus,
-.el-select__wrapper.is-focused,
 .el-textarea__inner:focus {
-  box-shadow: inset 2px 2px 0px rgba(0, 0, 0, 0.2), 0 0 0 2px var(--focus-ring) !important;
-  border-color: var(--brand) !important;
+  border-color: var(--border-focus) !important;
+  box-shadow: var(--focus-ring) !important;
 }
 
-/* 按钮样式 */
+/* ===== 按钮 ===== */
 .el-button {
   border-radius: var(--radius-sm) !important;
-  border: 2px solid var(--border-dark) !important;
-  box-shadow: var(--pixel-shadow) !important;
-  font-size: 12px !important;
-  padding: 8px 16px !important;
-  transition: all 0.1s ease !important;
+  font-weight: var(--font-weight-medium) !important;
+  transition: all var(--transition-fast) !important;
+  border: 1px solid transparent !important;
 }
 
 .el-button:hover {
-  transform: translate(1px, 1px) !important;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .el-button:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3) !important;
-}
-
-.el-button--default {
-  background: var(--pixel-bg) !important;
-  color: var(--text-1) !important;
+  transform: translateY(0) !important;
+  box-shadow: none !important;
 }
 
 .el-button--primary {
+  background: var(--brand-gradient) !important;
+  border: none !important;
+  color: white !important;
+}
+
+.el-button--primary:hover {
+  opacity: 0.92 !important;
+}
+
+.el-button--default {
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  background: var(--bg-card) !important;
+}
+
+.el-button--default:hover {
+  border-color: var(--brand) !important;
+  color: var(--brand) !important;
   background: var(--brand) !important;
-  color: white !important;
-  border-color: var(--border-dark) !important;
+  background: rgba(79, 110, 247, 0.05) !important;
 }
 
-.el-button--success {
-  background: var(--success) !important;
-  color: white !important;
-  border-color: var(--border-dark) !important;
-}
-
-.el-button--warning {
-  background: var(--warning) !important;
-  color: var(--text-1) !important;
-  border-color: var(--border-dark) !important;
-}
-
-.el-button--danger {
-  background: var(--danger) !important;
-  color: white !important;
-  border-color: var(--border-dark) !important;
-}
-
-/* 对话框样式 */
-.el-dialog,
-.el-drawer {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border-dark) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--pixel-shadow-hover) !important;
+/* ===== 对话框 ===== */
+.el-dialog {
+  border-radius: var(--radius-xl) !important;
+  box-shadow: var(--shadow-xl) !important;
+  overflow: hidden;
 }
 
 .el-dialog__header {
-  border-bottom: 2px solid var(--border) !important;
-  padding: var(--space-3) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  padding: var(--space-5) var(--space-6) !important;
 }
 
 .el-dialog__title {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 14px !important;
-  color: var(--text-1) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-lg) !important;
+  color: var(--text-primary) !important;
 }
 
 .el-dialog__body {
-  padding: var(--space-3) !important;
+  padding: var(--space-6) !important;
 }
 
 .el-dialog__footer {
-  border-top: 2px solid var(--border) !important;
-  padding: var(--space-3) !important;
+  border-top: 1px solid var(--border-light) !important;
+  padding: var(--space-4) var(--space-6) !important;
 }
 
-/* 下拉菜单样式 */
-.el-popover.el-popper,
-.el-dropdown__popper,
-.el-select__popper,
-.el-tooltip__popper {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important;
-  box-shadow: var(--pixel-shadow) !important;
-  color: var(--text-1) !important;
-}
-
-/* 菜单样式 */
-.el-menu {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
+/* ===== 下拉菜单 ===== */
+.el-popper.is-light {
+  border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-md) !important;
-  box-shadow: var(--pixel-shadow) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
-.el-menu-item,
-.el-sub-menu__title {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 12px !important;
+/* ===== 菜单 ===== */
+.el-menu--horizontal {
+  border-bottom: none !important;
+}
+
+.el-menu--horizontal > .el-menu-item {
+  border-bottom: none !important;
   border-radius: var(--radius-sm) !important;
-  margin: 4px !important;
+  margin: 0 4px !important;
+  font-weight: var(--font-weight-medium) !important;
+  transition: all var(--transition-fast) !important;
 }
 
-.el-menu-item:hover,
-.el-sub-menu__title:hover {
-  background: var(--pixel-hover) !important;
-}
-
-.el-menu-item.is-active {
-  background: var(--brand) !important;
+.el-menu--horizontal > .el-menu-item.is-active {
+  background: var(--brand-gradient) !important;
   color: white !important;
 }
 
-/* 表格样式 */
+/* ===== 表格 ===== */
 .el-table {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--pixel-shadow) !important;
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden;
 }
 
-.el-table__header-wrapper {
-  border-bottom: 2px solid var(--border) !important;
+.el-table th.el-table__cell {
+  background: var(--bg-section) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  color: var(--text-secondary) !important;
+  font-size: var(--font-size-sm) !important;
 }
 
-.el-table__header th.el-table__cell {
-  background: var(--bg1) !important;
-  color: var(--text-1) !important;
-  border-bottom: 2px solid var(--border) !important;
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 11px !important;
+.el-table td.el-table__cell {
+  border-bottom-color: var(--border-light) !important;
 }
 
-.el-table__body td.el-table__cell {
-  background: var(--pixel-bg) !important;
-  border-bottom: 1px solid var(--border-light) !important;
-  color: var(--text-1) !important;
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 11px !important;
+/* ===== 标签 ===== */
+.el-tag {
+  border-radius: var(--radius-full) !important;
+  border: none !important;
+  font-weight: var(--font-weight-medium) !important;
 }
 
-.el-table__row:hover td.el-table__cell {
-  background: var(--pixel-hover) !important;
-}
-
-/* 表单样式 */
+/* ===== 表单 ===== */
 .el-form-item__label {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 12px !important;
-  color: var(--text-1) !important;
+  font-weight: var(--font-weight-medium) !important;
+  color: var(--text-secondary) !important;
 }
 
-/* 消息提示样式 */
-.el-message {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important;
-  box-shadow: var(--pixel-shadow) !important;
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 11px !important;
-}
-
-/* 通知样式 */
-.el-notification {
-  background: var(--pixel-bg) !important;
-  border: 2px solid var(--border) !important;
-  border-radius: var(--radius-sm) !important;
-  box-shadow: var(--pixel-shadow) !important;
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 11px !important;
-}
-
-/* 分页样式 */
+/* ===== 分页 ===== */
 .el-pagination {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 11px !important;
+  font-weight: var(--font-weight-normal) !important;
 }
 
 .el-pager li {
-  border: 2px solid var(--border) !important;
   border-radius: var(--radius-sm) !important;
-  box-shadow: var(--pixel-shadow) !important;
-  margin: 0 4px !important;
-  width: 32px !important;
-  height: 32px !important;
-  line-height: 28px !important;
+  border: none !important;
+  font-weight: var(--font-weight-medium) !important;
+  transition: all var(--transition-fast) !important;
 }
 
 .el-pager li:hover {
-  background: var(--pixel-hover) !important;
-  transform: translate(1px, 1px) !important;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3) !important;
+  color: var(--brand) !important;
 }
 
-.el-pager li.active {
-  background: var(--brand) !important;
+.el-pager li.is-active {
+  background: var(--brand-gradient) !important;
   color: white !important;
-  border-color: var(--border-dark) !important;
 }
 
-/* 响应式调整 */
+/* ===== 页面头部 ===== */
+.el-page-header__left {
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* ===== 空状态 ===== */
+.el-empty__description p {
+  color: var(--text-tertiary) !important;
+  font-size: var(--font-size-md) !important;
+}
+
+/* ===== 步骤条 ===== */
+.el-step__title.is-finish,
+.el-step__head.is-finish {
+  color: var(--brand) !important;
+  border-color: var(--brand) !important;
+}
+
+/* ===== 评分 ===== */
+.el-rate .el-rate__icon.is-active {
+  color: #FBBF24 !important;
+}
+
+/* ===== 头像 ===== */
+.el-avatar {
+  border: 2px solid var(--border-light) !important;
+}
+
+/* ===== Skeleton ===== */
+.el-skeleton {
+  padding: var(--space-5) !important;
+}
+
+/* ===== Message ===== */
+.el-message {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: none !important;
+}
+
+/* ===== Drawer ===== */
+.el-drawer {
+  border-radius: var(--radius-xl) 0 0 var(--radius-xl) !important;
+}
+
+/* ===== 响应式 ===== */
 @media (max-width: 768px) {
-  .el-button,
-  .el-input,
-  .el-select,
-  .el-textarea,
-  .el-card,
-  .el-dialog,
-  .el-table,
-  .el-menu,
-  .el-form {
-    font-size: 10px !important;
+  .el-card__body {
+    padding: var(--space-4) !important;
   }
   
-  .el-button {
-    padding: 6px 12px !important;
+  .el-card__header {
+    padding: var(--space-3) var(--space-4) !important;
   }
   
-  .el-input__wrapper,
-  .el-textarea__inner,
-  .el-select__wrapper {
-    padding: 6px 10px !important;
+  .el-dialog__body {
+    padding: var(--space-4) !important;
   }
   
-  .el-table__header th.el-table__cell,
-  .el-table__body td.el-table__cell {
-    font-size: 10px !important;
-  }
-  
-  .el-pager li {
-    width: 28px !important;
-    height: 28px !important;
-    line-height: 24px !important;
-    font-size: 10px !important;
+  .el-dialog__header,
+  .el-dialog__footer {
+    padding: var(--space-3) var(--space-4) !important;
   }
 }
