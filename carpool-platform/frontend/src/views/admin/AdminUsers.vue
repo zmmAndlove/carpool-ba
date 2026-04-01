@@ -1,81 +1,108 @@
 <template>
   <div class="admin-users">
-    <h1>用户管理</h1>
-    <div class="users-table">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>用户名</th>
-            <th>真实姓名</th>
-            <th>性别</th>
-            <th>年龄</th>
-            <th>评分</th>
-            <th>行程数</th>
-            <th>完成行程数</th>
-            <th>注册时间</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.realName }}</td>
-            <td>{{ user.gender }}</td>
-            <td>{{ user.age }}</td>
-            <td>{{ user.rating }}</td>
-            <td>{{ user.tripCount }}</td>
-            <td>{{ user.completedTrips }}</td>
-            <td>{{ formatDate(user.createdAt) }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="page-header">
+      <h1 class="page-title">
+        <el-icon><User /></el-icon>
+        用户管理
+      </h1>
+      <p class="page-subtitle">共 {{ total }} 位注册用户</p>
     </div>
-    <div class="pagination">
-      <button @click="prevPage" :disabled="page === 1">上一页</button>
-      <span>{{ page }} / {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="page === totalPages">下一页</button>
+
+    <el-card class="table-card" shadow="hover">
+      <el-table
+        :data="users"
+        stripe
+        v-loading="loading"
+        style="width: 100%"
+        :header-cell-style="{ background: 'var(--bg-section)', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '13px' }"
+        :row-style="{ transition: 'all 0.2s ease' }"
+      >
+        <el-table-column prop="id" label="ID" width="70" align="center" />
+        <el-table-column prop="username" label="用户名" min-width="120">
+          <template #default="{ row }">
+            <div class="user-cell">
+              <el-avatar :size="32" class="user-avatar">
+                {{ row.username?.charAt(0)?.toUpperCase() }}
+              </el-avatar>
+              <span class="user-name">{{ row.username }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="realName" label="真实姓名" min-width="100" />
+        <el-table-column prop="gender" label="性别" width="80" align="center">
+          <template #default="{ row }">
+            <el-tag :type="row.gender === '男' ? '' : 'danger'" size="small" round>
+              {{ row.gender }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="age" label="年龄" width="70" align="center" />
+        <el-table-column prop="rating" label="评分" width="120" align="center">
+          <template #default="{ row }">
+            <div class="rating-cell">
+              <el-rate :model-value="row.rating || 0" disabled size="small" />
+              <span class="rating-num">{{ row.rating?.toFixed(1) || '-' }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="tripCount" label="行程数" width="90" align="center">
+          <template #default="{ row }">
+            <span class="badge-num">{{ row.tripCount }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="completedTrips" label="完成行程" width="100" align="center">
+          <template #default="{ row }">
+            <span class="badge-num success">{{ row.completedTrips }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="注册时间" min-width="160">
+          <template #default="{ row }">
+            <span class="time-text">{{ formatDate(row.createdAt) }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <div class="pagination-wrapper">
+      <el-pagination
+        v-model:current-page="page"
+        :page-size="size"
+        :total="total"
+        layout="prev, pager, next"
+        background
+        @current-change="fetchUsers"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { User } from '@element-plus/icons-vue';
 
 const users = ref<any[]>([]);
 const page = ref(1);
 const size = ref(10);
 const total = ref(0);
-const totalPages = computed(() => Math.ceil(total.value / size.value));
+const loading = ref(false);
 
 const fetchUsers = async () => {
+  loading.value = true;
   try {
     const response = await axios.get(`/api/admin/users?page=${page.value}&size=${size.value}`);
     users.value = response.data.users;
     total.value = response.data.total;
   } catch (error) {
     console.error('获取用户列表失败:', error);
-  }
-};
-
-const prevPage = () => {
-  if (page.value > 1) {
-    page.value--;
-    fetchUsers();
-  }
-};
-
-const nextPage = () => {
-  if (page.value < totalPages.value) {
-    page.value++;
-    fetchUsers();
+  } finally {
+    loading.value = false;
   }
 };
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleString();
+  return date.toLocaleString('zh-CN');
 };
 
 onMounted(() => {
@@ -85,56 +112,134 @@ onMounted(() => {
 
 <style scoped>
 .admin-users {
-  padding: 20px;
+  padding: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.users-table {
-  margin-top: 20px;
-  overflow-x: auto;
+.page-header {
+  margin-bottom: var(--space-6);
 }
 
-.users-table table {
-  width: 100%;
-  border-collapse: collapse;
+.page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2) 0;
 }
 
-.users-table th, .users-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.page-title .el-icon {
+  color: var(--brand);
 }
 
-.users-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
+.page-subtitle {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-md);
+  margin: 0;
+  padding-left: calc(var(--space-3) + 24px);
 }
 
-.users-table tr:hover {
-  background-color: #f5f5f5;
+.table-card {
+  border: none;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-6);
 }
 
-.pagination {
+.table-card :deep(.el-card__body) {
+  padding: 0;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+  color: white;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.user-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.rating-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rating-num {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-medium);
+}
+
+.badge-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-lg);
+  background: rgba(79, 110, 247, 0.08);
+  color: var(--brand);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.badge-num.success {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--success);
+}
+
+.time-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.pagination-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  gap: 10px;
 }
 
-.pagination button {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
+::deep(.el-pagination.is-background .el-pager li) {
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
 }
 
-.pagination button:hover {
-  background-color: #f2f2f2;
+::deep(.el-pagination.is-background .btn-prev),
+::deep(.el-pagination.is-background .btn-next) {
+  border-radius: var(--radius-md);
 }
 
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+::deep(.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell) {
+  background: var(--bg-section);
+}
+
+::deep(.el-table) {
+  --el-table-border-color: var(--border-color);
+  --el-table-header-bg-color: var(--bg-section);
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 768px) {
+  .admin-users {
+    padding: var(--space-3);
+  }
+
+  .page-subtitle {
+    padding-left: 0;
+  }
 }
 </style>

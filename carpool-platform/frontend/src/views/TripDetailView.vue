@@ -89,7 +89,7 @@
           <div class="route-display">
             <div class="route-point departure">
               <div class="point-icon">
-                <el-icon size="24" color="#007AFF">
+                <el-icon size="24">
                   <Location />
                 </el-icon>
               </div>
@@ -106,7 +106,7 @@
                 <span>约4小时 · 300公里</span>
               </div>
               <div class="line-arrow">
-                <el-icon size="24" color="#666">
+                <el-icon size="24">
                   <Right />
                 </el-icon>
               </div>
@@ -114,7 +114,7 @@
             
             <div class="route-point destination">
               <div class="point-icon">
-                <el-icon size="24" color="#34C759">
+                <el-icon size="24">
                   <LocationFilled />
                 </el-icon>
               </div>
@@ -337,19 +337,19 @@
         
         <div class="safety-tips">
           <div class="safety-tip">
-            <el-icon color="#34C759"><CircleCheck /></el-icon>
+            <el-icon class="safety-icon"><CircleCheck /></el-icon>
             <span>请确认对方身份信息，建议出发前视频通话验证</span>
           </div>
           <div class="safety-tip">
-            <el-icon color="#34C759"><CircleCheck /></el-icon>
+            <el-icon class="safety-icon"><CircleCheck /></el-icon>
             <span>行程中请保持手机畅通，及时与家人朋友分享位置</span>
           </div>
           <div class="safety-tip">
-            <el-icon color="#34C759"><CircleCheck /></el-icon>
+            <el-icon class="safety-icon"><CircleCheck /></el-icon>
             <span>如遇紧急情况，请立即拨打110或联系平台客服</span>
           </div>
           <div class="safety-tip">
-            <el-icon color="#34C759"><CircleCheck /></el-icon>
+            <el-icon class="safety-icon"><CircleCheck /></el-icon>
             <span>行程完成后请及时互相评价，帮助其他用户参考</span>
           </div>
         </div>
@@ -632,85 +632,117 @@ onMounted(() => {
 .trip-detail-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--space-6);
 }
 
 .page-header {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 
 .header-title {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
 }
 
 .loading-container {
-  padding: 40px 20px;
+  padding: var(--space-10) var(--space-5);
 }
 
 .trip-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .trip-info-card {
-  margin-bottom: 20px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+  overflow: visible;
 }
 
 .trip-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: var(--space-8);
   flex-wrap: wrap;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .trip-type-badge {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
+}
+
+.trip-type-badge :deep(.el-tag) {
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-weight: var(--font-weight-medium);
+  border: none;
 }
 
 .trip-actions {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
 .section-title {
-  margin: 0 0 20px 0;
-  color: #333;
-  font-size: 18px;
-  font-weight: 600;
+  margin: 0 0 var(--space-5) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  position: relative;
+  padding-left: 14px;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: var(--brand-gradient);
+  border-radius: 2px;
 }
 
 .route-display {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: var(--bg-section);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
 }
 
 .route-point {
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
   align-items: flex-start;
 }
 
 .point-icon {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: var(--bg-card);
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-card);
+  color: var(--brand);
+}
+
+.route-point.destination .point-icon {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+  color: var(--success);
 }
 
 .point-info {
@@ -718,85 +750,88 @@ onMounted(() => {
 }
 
 .point-city {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
 }
 
 .point-detail {
-  color: #666;
-  margin-bottom: 4px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
 }
 
 .point-district {
-  color: #999;
-  font-size: 14px;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
 }
 
 .route-line {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 10px 0;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
 }
 
 .line-duration {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #666;
-  font-size: 14px;
+  gap: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
 }
 
 .line-arrow {
-  color: #666;
+  color: var(--text-tertiary);
 }
 
 .trip-details-section {
-  margin-top: 30px;
+  margin-top: var(--space-8);
 }
 
 .detail-item {
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 
 .detail-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 8px;
+  gap: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-2);
 }
 
 .detail-value {
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
 }
 
 .detail-value.price {
-  color: #f56c6c;
-  font-size: 20px;
-  font-weight: 600;
+  color: var(--danger);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
 }
 
 .trip-description-section {
-  margin-top: 30px;
+  margin-top: var(--space-8);
 }
 
 .description-content {
-  color: #666;
+  color: var(--text-secondary);
   line-height: 1.8;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: var(--space-4);
+  background: var(--bg-section);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
 }
 
 .publisher-card {
-  margin-bottom: 20px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
 }
 
 .card-header {
@@ -807,18 +842,23 @@ onMounted(() => {
 
 .card-header h3 {
   margin: 0;
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
 }
 
 .publisher-info {
   display: flex;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 .publisher-avatar {
   position: relative;
+}
+
+.publisher-avatar :deep(.el-avatar) {
+  border: 3px solid var(--bg-card);
+  box-shadow: var(--shadow-card);
 }
 
 .publisher-verification {
@@ -832,79 +872,75 @@ onMounted(() => {
 }
 
 .publisher-name {
-  margin: 0 0 12px 0;
-  color: #333;
-  font-size: 18px;
-  font-weight: 600;
+  margin: 0 0 var(--space-3) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
 }
 
 .publisher-rating {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 .publisher-stats {
   display: flex;
-  gap: 24px;
-  margin-bottom: 16px;
+  gap: var(--space-6);
+  margin-bottom: var(--space-4);
 }
 
 .stat-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .stat-label {
-  color: #999;
-  font-size: 12px;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
 }
 
 .stat-value {
-  color: #333;
-  font-size: 16px;
-  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
 }
 
-.publisher-location {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.publisher-education {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #666;
-  margin-bottom: 8px;
-}
-
+.publisher-location,
+.publisher-education,
 .publisher-interests {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #666;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
 }
 
 .passengers-card {
-  margin-bottom: 20px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
 }
 
 .passengers-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .passenger-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-section);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-fast);
+}
+
+.passenger-item:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: transparent;
 }
 
 .passenger-info {
@@ -912,80 +948,103 @@ onMounted(() => {
 }
 
 .passenger-name {
-  color: #333;
-  font-weight: 500;
-  margin-bottom: 4px;
+  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 2px;
 }
 
 .passenger-rating {
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .empty-passengers {
   text-align: center;
-  padding: 40px 20px;
+  padding: var(--space-10) var(--space-5);
 }
 
 .safety-card {
-  margin-bottom: 20px;
+  border: none;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
+}
+
+.safety-card :deep(.el-card__header) {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(16, 185, 129, 0.02) 100%);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .safety-tips {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .safety-tip {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  color: #666;
+  gap: var(--space-3);
+  color: var(--text-secondary);
   line-height: 1.6;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--bg-section);
+  transition: var(--transition-fast);
+}
+
+.safety-tip:hover {
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.safety-icon {
+  color: var(--success);
+  flex-shrink: 0;
+  font-size: 18px;
 }
 
 .error-container {
   text-align: center;
-  padding: 60px 20px;
+  padding: var(--space-16) var(--space-5);
 }
 
-:deep(.el-input__wrapper) {
-  border-radius: 6px;
+::deep(.el-button) {
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
 }
 
-:deep(.el-button) {
-  border-radius: 6px;
+::deep(.el-tag) {
+  border-radius: 20px;
 }
 
 @media (max-width: 768px) {
   .trip-detail-container {
-    padding: 10px;
+    padding: var(--space-3);
   }
-  
+
   .trip-header {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .trip-actions {
     flex-direction: column;
   }
-  
+
   .trip-actions .el-button {
     width: 100%;
   }
-  
+
   .publisher-info {
     flex-direction: column;
   }
-  
+
   .publisher-stats {
     flex-wrap: wrap;
-    gap: 16px;
+    gap: var(--space-4);
   }
-  
+
   .route-display {
-    padding: 16px;
+    padding: var(--space-4);
   }
 }
 </style>

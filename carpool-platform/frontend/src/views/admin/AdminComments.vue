@@ -1,91 +1,128 @@
 <template>
   <div class="admin-comments">
-    <h1>评论管理</h1>
-    <div class="comments-table">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>用户ID</th>
-            <th>用户名</th>
-            <th>内容</th>
-            <th>评分</th>
-            <th>点赞数</th>
-            <th>创建时间</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="comment in comments" :key="comment.id">
-            <td>{{ comment.id }}</td>
-            <td>{{ comment.userId }}</td>
-            <td>{{ comment.username }}</td>
-            <td>{{ comment.content }}</td>
-            <td>{{ comment.rating }}</td>
-            <td>{{ comment.likes }}</td>
-            <td>{{ formatDate(comment.createdAt) }}</td>
-            <td>
-              <button @click="deleteComment(comment.id)" class="delete-btn">删除</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="page-header">
+      <h1 class="page-title">
+        <el-icon><ChatDotRound /></el-icon>
+        评论管理
+      </h1>
+      <p class="page-subtitle">共 {{ total }} 条评论</p>
     </div>
-    <div class="pagination">
-      <button @click="prevPage" :disabled="page === 1">上一页</button>
-      <span>{{ page }} / {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="page === totalPages">下一页</button>
+
+    <el-card class="table-card" shadow="hover">
+      <el-table
+        :data="comments"
+        stripe
+        v-loading="loading"
+        style="width: 100%"
+        :header-cell-style="{ background: 'var(--bg-section)', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '13px' }"
+      >
+        <el-table-column prop="id" label="ID" width="70" align="center" />
+        <el-table-column prop="userId" label="用户ID" width="80" align="center" />
+        <el-table-column prop="username" label="用户名" min-width="120">
+          <template #default="{ row }">
+            <div class="user-cell">
+              <el-avatar :size="28" class="comment-avatar">
+                {{ row.username?.charAt(0)?.toUpperCase() }}
+              </el-avatar>
+              <span class="user-name">{{ row.username }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="content" label="内容" min-width="250" show-overflow-tooltip />
+        <el-table-column prop="rating" label="评分" width="120" align="center">
+          <template #default="{ row }">
+            <div class="rating-cell">
+              <el-rate :model-value="row.rating || 0" disabled size="small" />
+              <span class="rating-num">{{ row.rating?.toFixed(1) || '-' }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="likes" label="点赞" width="80" align="center">
+          <template #default="{ row }">
+            <span class="likes-badge">
+              <el-icon><Star /></el-icon>
+              {{ row.likes || 0 }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createdAt" label="时间" min-width="160">
+          <template #default="{ row }">
+            <span class="time-text">{{ formatDate(row.createdAt) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100" align="center" fixed="right">
+          <template #default="{ row }">
+            <el-popconfirm
+              title="确定要删除这条评论吗？"
+              confirm-button-text="删除"
+              cancel-button-text="取消"
+              confirm-button-type="danger"
+              @confirm="deleteComment(row.id)"
+            >
+              <template #reference>
+                <el-button type="danger" size="small" round plain>
+                  <el-icon><Delete /></el-icon>
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <div class="pagination-wrapper">
+      <el-pagination
+        v-model:current-page="page"
+        :page-size="size"
+        :total="total"
+        layout="prev, pager, next"
+        background
+        @current-change="fetchComments"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { ChatDotRound, Star, Delete } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
 
 const comments = ref<any[]>([]);
 const page = ref(1);
 const size = ref(10);
 const total = ref(0);
-const totalPages = computed(() => Math.ceil(total.value / size.value));
+const loading = ref(false);
 
 const fetchComments = async () => {
+  loading.value = true;
   try {
     const response = await axios.get(`/api/admin/comments?page=${page.value}&size=${size.value}`);
     comments.value = response.data.comments;
     total.value = response.data.total;
   } catch (error) {
     console.error('获取评论列表失败:', error);
+  } finally {
+    loading.value = false;
   }
-};
-
-const prevPage = () => {
-  if (page.value > 1) {
-    page.value--;
-    fetchComments();
-  }
-};
-
-const nextPage = () => {
-  if (page.value < totalPages.value) {
-    page.value++;
-    fetchComments();
-  }
-};
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleString();
 };
 
 const deleteComment = async (id: number) => {
   try {
     await axios.delete(`/api/admin/comments/${id}`);
-    // 重新获取评论列表
+    ElMessage.success('评论已删除');
     fetchComments();
   } catch (error) {
     console.error('删除评论失败:', error);
+    ElMessage.error('删除失败，请重试');
   }
+};
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleString('zh-CN');
 };
 
 onMounted(() => {
@@ -95,69 +132,124 @@ onMounted(() => {
 
 <style scoped>
 .admin-comments {
-  padding: 20px;
+  padding: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.comments-table {
-  margin-top: 20px;
-  overflow-x: auto;
+.page-header {
+  margin-bottom: var(--space-6);
 }
 
-.comments-table table {
-  width: 100%;
-  border-collapse: collapse;
+.page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2) 0;
 }
 
-.comments-table th, .comments-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.page-title .el-icon {
+  color: var(--brand);
 }
 
-.comments-table th {
-  background-color: #f2f2f2;
-  font-weight: bold;
+.page-subtitle {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-md);
+  margin: 0;
+  padding-left: calc(var(--space-3) + 24px);
 }
 
-.comments-table tr:hover {
-  background-color: #f5f5f5;
-}
-
-.delete-btn {
-  padding: 6px 12px;
+.table-card {
   border: none;
-  border-radius: 4px;
-  background-color: #dc3545;
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-6);
+}
+
+.table-card :deep(.el-card__body) {
+  padding: 0;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.comment-avatar {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
   color: white;
-  cursor: pointer;
+  font-weight: var(--font-weight-bold);
+  font-size: 12px;
+  flex-shrink: 0;
 }
 
-.delete-btn:hover {
-  background-color: #c82333;
+.user-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
 }
 
-.pagination {
+.rating-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.rating-num {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-medium);
+}
+
+.likes-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--warning);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.time-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.pagination-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  gap: 10px;
 }
 
-.pagination button {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
+::deep(.el-pagination.is-background .el-pager li) {
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
 }
 
-.pagination button:hover {
-  background-color: #f2f2f2;
+::deep(.el-pagination.is-background .btn-prev),
+::deep(.el-pagination.is-background .btn-next) {
+  border-radius: var(--radius-md);
 }
 
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+::deep(.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell) {
+  background: var(--bg-section);
+}
+
+::deep(.el-table) {
+  --el-table-border-color: var(--border-color);
+  --el-table-header-bg-color: var(--bg-section);
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 768px) {
+  .admin-comments {
+    padding: var(--space-3);
+  }
+
+  .page-subtitle {
+    padding-left: 0;
+  }
 }
 </style>
